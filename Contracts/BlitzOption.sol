@@ -120,6 +120,12 @@ interface AggregatorInterface {
     function latestRound() external view returns (uint256);
     function getAnswer(uint256 roundId) external view returns (int256);
     function getTimestamp(uint256 roundId) external view returns (uint256);
+    function requestRateUpdate() external returns (bytes32);
+}
+
+interface BlitzStakingInterface{
+    function sendUSDT(address _to, uint _amount) external returns(uint);
+    function receiveUSDT(uint _amount) external returns(uint);
 }
 /*
 #. Aggregator BTC-USD       TLNXr6KA8iQ7Gig8pBSy9R4nSR4PMvKYY4
@@ -136,21 +142,27 @@ contract BlitzOption is  Ownable {
     using SafeMath for uint256;
 
     address public oracle;
-    address public stakingContract = address(0x0);
+    address public stakingContract = address(0x410DD7C51F8DA12479FF138865EA54960F365B2E94);         //TBEQGWtRwZPDWw3XZ8gtMShJMiDs3FM1v2
+    TRC20Interface usdtToken = TRC20Interface(0x412CA9216290851A71AAECE65924034006DA8D2E24);         //TE3MLtNHrkddRNgy6tNi7bfUVRyAe9BpVL
     
+    /*
+        Each trading Pair is defined here
+    */
     struct Pair {
         string      name;
         uint        pair_id;
         uint        min_bet;
         uint        max_bet;                        
-        uint        winningFactor;
+        uint        winningFactor;          // multiply of 1000 - eg. 1.1x = 1100
         address     AggregatorAddress;
         AggregatorInterface aggregator;
         bool       status;                 //1 is active pair 0 is inactive pair
     } 
     uint public pair_count;
-    mapping (uint => Pair) pairs;
-    
+    mapping (uint => Pair) public pairs;
+    /*
+        Bet structure
+    */
     struct Bet {
         address         caller;
         uint            pair_id;
@@ -163,15 +175,29 @@ contract BlitzOption is  Ownable {
         uint8           status;             //OPEN is 0 - CLOSED is 1 - CANCELLED is 2
     } 
     uint public bet_count;
-    mapping (uint => Bet) bets;
+    mapping (uint => Bet) public bets;
     
+    /*
+        Request Validation 
+    */
+    //Block Number of latest user request
+    mapping (address => uint) public validRequestTime;      
+    //how many blocks after request Note that Tron block time is every 3 seconds
+    //if requestDuration = 2 means addBet only valid in 2 blocks (6 seconds) after making requestUpdate
+    uint public requestDuration = 5;                        
+    /*
+        validDuration[_duration] must equal to _duration or its invalid 
+    */
     mapping (uint => uint) validDuration;   //in seconds
+    
     
     //////////////////////
     // Events
     //////////////////////
-    event newBet(uint _bet_id,address _caller,uint _pair_id, uint _amount, uint _duration,uint _betTime,int _openPrice,uint8 _betType);
-    event betClosed(uint _bet_id,uint _closedPrice);
+    event newBet(uint _bet_id,address _caller,uint _pair_id, uint _amount, uint _duration,uint _betTime,uint8 _betType);
+    event betClosed(uint _bet_id,int _closedPrice,bool won);
+    event betCancelled(uint _bet_id);
+    event requestUpdate(address _caller,uint _pair_id);
     
     constructor() public{        
        oracle = msg.sender;
@@ -181,13 +207,25 @@ contract BlitzOption is  Ownable {
        validDuration[40] = 40;
        validDuration[50] = 50;
        validDuration[60] = 60;
-       
+       //BTCUSD TLNXr6KA8iQ7Gig8pBSy9R4nSR4PMvKYY4
+       addPair('BTCUSD',10000000,100000000,1234,address(0x41721A8E6A51F09B8D48E02C9DA32B741D2E82E678));
     }
+    
+    ////////////////////// Send Request for latest update
+    
     
     ////////////////////// Getters
     function getLatestPrice(uint pair_id) public view returns (int)  {
         require(pairs[pair_id].aggregator.latestTimestamp() > 0, "Round not complete");
         return pairs[pair_id].aggregator.latestAnswer();
+    }
+    function requestPriceUpdate(uint _pair_id) public {
+        if (pairs[_pair_id].aggregator.latestTimestamp()<now)
+        {
+            pairs[_pair_id].aggregator.requestRateUpdate();
+            validRequestTime[msg.sender] = block.number + requestDuration;
+            emit requestUpdate(msg.sender,_pair_id);
+        }
     }
     
     //////////////////////
@@ -199,22 +237,65 @@ contract BlitzOption is  Ownable {
     //addBet return:
     // 0 as price not match
     // 1 as OK
-    function addBet(uint _pair_id, uint _duration,uint8 _betType, int _openPrice) public payable returns(uint _returnCode){
+    function addBet(uint _amount, uint _pair_id, uint _duration,uint8 _betType) public payable returns(uint _returnCode){
         require(_pair_id<=pair_count,'pair not exist');
         require(pairs[_pair_id].status,'pair not active');
         require(_betType == 0 || _betType == 1,'invalid bet' );
         require(_duration>0,'invalid duration');
         require(validDuration[_duration] == _duration,'invalid duration');
-        
-        if (_openPrice != getLatestPrice(_pair_id)){
-            return 0;
-        }
+        require(block.number<=validRequestTime[msg.sender],'request Expired');
+
         bet_count++;
+        bets[bet_count] = Bet(msg.sender,_pair_id,msg.value,_duration,now,-1,-1,_betType,0);
         
-        bets[bet_count] = Bet(msg.sender,_pair_id,msg.value,_duration,now,_openPrice,0,_betType,0);
+        //send money to Staking contract
+        uint256 allowance = usdtToken.allowance(msg.sender,address(this));
+        require (allowance>=_amount,'allowance error');
         
-        emit newBet(bet_count,msg.sender, _pair_id, msg.value, _duration,now, _openPrice, _betType);
+        usdtToken.transferFrom(msg.sender,stakingContract,_amount);
+        BlitzStakingInterface(stakingContract).receiveUSDT(_amount);
+        
+        emit newBet(bet_count,msg.sender, _pair_id, msg.value, _duration,now, _betType);
         return 1;
+    }
+
+    function setOpenPrice(uint _bet_id,int _openPrice) external onlyOracle {
+        require(_bet_id<=bet_count,'bet not exist');
+        require(bets[_bet_id].status == 0,'bet not open');
+        bets[_bet_id].openPrice = _openPrice;
+        
+    }
+    function closeBet(uint _bet_id,int _closedPrice) public onlyOracle {
+        require(_bet_id<=bet_count,'bet not exist');
+        require(bets[_bet_id].status == 0,'bet already closed');
+        
+        bets[_bet_id].closedPrice = _closedPrice;
+        bets[_bet_id].status = 1;
+        uint winningAmount = 0;
+        if (bets[_bet_id].betType == 0) // CALL UP
+        {
+            if (_closedPrice>bets[_bet_id].openPrice)
+                winningAmount = bets[_bet_id].amount.mul(pairs[bets[_bet_id].pair_id].winningFactor).div(1000);
+        }
+        else if (bets[_bet_id].betType == 1) // PUT DOWN
+        {
+            if (_closedPrice<bets[_bet_id].openPrice)
+                winningAmount = bets[_bet_id].amount.mul(pairs[bets[_bet_id].pair_id].winningFactor).div(1000);
+        }
+        if (winningAmount > 0){
+            //PAY the Winner from Staking Contract
+            BlitzStakingInterface(stakingContract).sendUSDT(bets[_bet_id].caller,winningAmount);
+            emit betClosed(_bet_id,_closedPrice,true);
+        }
+        else 
+            emit betClosed(_bet_id,_closedPrice,false);
+    }
+    function cancelBet(uint _bet_id) public {
+        require(bets[_bet_id].caller == msg.sender,'not bet owner or contract owner');
+        require(bets[_bet_id].status == 0,'bet not open');
+        
+        bets[_bet_id].status = 2;
+        emit betCancelled(_bet_id);
     }
     
     /*PAIRS*/
@@ -246,6 +327,10 @@ contract BlitzOption is  Ownable {
     }
     
     /*OTHERS*/
+    function setRequestDuration(uint _blocks) onlyOwner public{
+        require(_blocks>0,'invalid input');
+        requestDuration = _blocks;
+    }
     function setValidDurations(uint _duration, uint _durationValue) onlyOwner public{
         require(_duration>0,'invalid duration');
         validDuration[_duration] = _durationValue;      //
@@ -254,7 +339,6 @@ contract BlitzOption is  Ownable {
         require(_stakingContract != address(0));
         stakingContract = _stakingContract;
     }
-    
     function setOracle(address _newOracle) onlyOwner external {
         require(_newOracle != address(0) && _newOracle != oracle);
         oracle = _newOracle;

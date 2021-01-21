@@ -40,7 +40,6 @@ XAU-USD https://nile.tronscan.org/#/contract/THcT2kzbEtaJbA9NQvEgAGqUmSTpBoLBzm/
 ##. mysql -> CREATE DATABASE oracle;
 ##. ~/just-link/node/src/main/resources/db/migration# mysql -u root -p oracle < V1.0.1__init.sql 
 
-
 #. Start JST Node
 java -jar node/build/libs/node-v1.0.jar --server.port=8081 --spring.profiles.active=dev --key key.store --help --env dev
 
