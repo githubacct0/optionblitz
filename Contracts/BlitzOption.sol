@@ -122,28 +122,31 @@ interface AggregatorInterface {
     function getTimestamp(uint256 roundId) external view returns (uint256);
 }
 /*
-#. Aggregator BTC-USD		TLNXr6KA8iQ7Gig8pBSy9R4nSR4PMvKYY4
-##. JobID					c60981b342f544fbb2381e6e7129c0e1
+#. Aggregator BTC-USD       TLNXr6KA8iQ7Gig8pBSy9R4nSR4PMvKYY4
+##. JobID                   6dff23e595e74352b319c35e2d29737a
 
-#. Aggregator EUR-USDT		TLALWuipoQ15QSy4eKVq3hCua1P6D4E4t4
-##. JobID					df38376bd6f14780bb1c8a1a4da5951e
+#. Aggregator EUR-USDT      TLALWuipoQ15QSy4eKVq3hCua1P6D4E4t4
+##. JobID                   839c053c02204544b56403d3f43cc114
 
-#. Aggregator XAU-USDT		THcT2kzbEtaJbA9NQvEgAGqUmSTpBoLBzm
-##. JobID					28d30f4029864c44be7124d14e20b071
+#. Aggregator XAU-USDT      THcT2kzbEtaJbA9NQvEgAGqUmSTpBoLBzm
+##. JobID                   44f3d76d57d84049a6c5e16a6fd58e38
 */
 
 contract BlitzOption is  Ownable {
     using SafeMath for uint256;
 
     address public oracle;
+    address public stakingContract = address(0x0);
     
-    mapping (address => AggregatorInterface) priceFeed;
     struct Pair {
         string      name;
         uint        pair_id;
         uint        min_bet;
         uint        max_bet;                        
-        uint        winningFactor; 
+        uint        winningFactor;
+        address     AggregatorAddress;
+        AggregatorInterface aggregator;
+        bool       status;                 //1 is active pair 0 is inactive pair
     } 
     uint public pair_count;
     mapping (uint => Pair) pairs;
@@ -152,22 +155,39 @@ contract BlitzOption is  Ownable {
         address         caller;
         uint            pair_id;
         uint            amount;
-        uint            openPrice;
-        uint            closePrice;
-        uint            betType;            //CALL is 0 and PUT is 1
-        
+        uint            duration;           //in seconds 
+        uint            betTime;
+        int             openPrice;
+        int             closedPrice;
+        uint8           betType;            //CALL is 0 and PUT is 1 note: Calls -- Up; Puts -- Down
+        uint8           status;             //OPEN is 0 - CLOSED is 1 - CANCELLED is 2
     } 
     uint public bet_count;
     mapping (uint => Bet) bets;
     
+    mapping (uint => uint) validDuration;   //in seconds
+    
+    //////////////////////
+    // Events
+    //////////////////////
+    event newBet(uint _bet_id,address _caller,uint _pair_id, uint _amount, uint _duration,uint _betTime,int _openPrice,uint8 _betType);
+    event betClosed(uint _bet_id,uint _closedPrice);
+    
     constructor() public{        
        oracle = msg.sender;
+       validDuration[10] = 10;
+       validDuration[20] = 20;
+       validDuration[30] = 30;
+       validDuration[40] = 40;
+       validDuration[50] = 50;
+       validDuration[60] = 60;
+       
     }
     
     ////////////////////// Getters
-    function getLatestPrice(address Aggregator_Address) public view returns (int)  {
-        require(priceFeed[Aggregator_Address].latestTimestamp() > 0, "Round not complete");
-        return priceFeed[Aggregator_Address].latestAnswer();
+    function getLatestPrice(uint pair_id) public view returns (int)  {
+        require(pairs[pair_id].aggregator.latestTimestamp() > 0, "Round not complete");
+        return pairs[pair_id].aggregator.latestAnswer();
     }
     
     //////////////////////
@@ -175,11 +195,33 @@ contract BlitzOption is  Ownable {
     //////////////////////
     
     ////////////////////// Setters
+    /*BETS*/
+    //addBet return:
+    // 0 as price not match
+    // 1 as OK
+    function addBet(uint _pair_id, uint _duration,uint8 _betType, int _openPrice) public payable returns(uint _returnCode){
+        require(_pair_id<=pair_count,'pair not exist');
+        require(pairs[_pair_id].status,'pair not active');
+        require(_betType == 0 || _betType == 1,'invalid bet' );
+        require(_duration>0,'invalid duration');
+        require(validDuration[_duration] == _duration,'invalid duration');
+        
+        if (_openPrice != getLatestPrice(_pair_id)){
+            return 0;
+        }
+        bet_count++;
+        
+        bets[bet_count] = Bet(msg.sender,_pair_id,msg.value,_duration,now,_openPrice,0,_betType,0);
+        
+        emit newBet(bet_count,msg.sender, _pair_id, msg.value, _duration,now, _openPrice, _betType);
+        return 1;
+    }
     
-    function addPair(string memory _name, uint _min_bet, uint _max_bet, uint _winningFactor) onlyOwner() public returns (uint pairID){
+    /*PAIRS*/
+    function addPair(string memory _name, uint _min_bet, uint _max_bet, uint _winningFactor,address _AggregatorAddress) onlyOwner() public returns (uint pairID){
         
         pair_count++;
-        pairs[pair_count] = Pair(_name,pair_count, _min_bet, _max_bet, _winningFactor);            
+        pairs[pair_count] = Pair(_name,pair_count, _min_bet, _max_bet, _winningFactor,_AggregatorAddress,AggregatorInterface(_AggregatorAddress),true);            
   
         return pair_count;
     }
@@ -195,12 +237,24 @@ contract BlitzOption is  Ownable {
     function updatePairCoefs(uint pairID, uint _winningFactor) onlyOwner() public{
         pairs[pairID].winningFactor= _winningFactor;
     }
-    
-    
-    function setPriceFeed(address Aggregator_Address) onlyOwner public {
-       require(Aggregator_Address != address(0));
-       priceFeed[Aggregator_Address] = AggregatorInterface(Aggregator_Address);
+    function updatePairStatus(uint pairID, bool _status) onlyOwner() public{
+        pairs[pairID].status= _status;
     }
+    function updatePairAggregatorAddress(uint pairID, address _AggregatorAddress) onlyOwner() public{
+        pairs[pairID].AggregatorAddress= _AggregatorAddress;
+        pairs[pairID].aggregator= AggregatorInterface(_AggregatorAddress);
+    }
+    
+    /*OTHERS*/
+    function setValidDurations(uint _duration, uint _durationValue) onlyOwner public{
+        require(_duration>0,'invalid duration');
+        validDuration[_duration] = _durationValue;      //
+    }
+    function setStakingContract(address _stakingContract) onlyOwner public{
+        require(_stakingContract != address(0));
+        stakingContract = _stakingContract;
+    }
+    
     function setOracle(address _newOracle) onlyOwner external {
         require(_newOracle != address(0) && _newOracle != oracle);
         oracle = _newOracle;
