@@ -194,7 +194,7 @@ contract BlitzOption is  Ownable {
     //////////////////////
     // Events
     //////////////////////
-    event newBet(uint _bet_id,address _caller,uint _pair_id, uint _amount, uint _duration,uint _betTime,uint8 _betType);
+    event newBet(uint _bet_id,address _caller,uint _pair_id, uint _amount, uint _duration,int _openPrice,uint _betTime,uint8 _betType);
     event betClosed(uint _bet_id,int _closedPrice,bool won);
     event betCancelled(uint _bet_id);
     event requestUpdate(address _caller,uint _pair_id);
@@ -215,9 +215,9 @@ contract BlitzOption is  Ownable {
     
     
     ////////////////////// Getters
-    function getLatestPrice(uint pair_id) public view returns (int)  {
-        require(pairs[pair_id].aggregator.latestTimestamp() > 0, "Round not complete");
-        return pairs[pair_id].aggregator.latestAnswer();
+    function getLatestPrice(uint _pair_id) public view returns (int)  {
+        require(pairs[_pair_id].aggregator.latestTimestamp() > 0, "Round not complete");
+        return pairs[_pair_id].aggregator.latestAnswer();
     }
     function requestPriceUpdate(uint _pair_id) public {
         if (pairs[_pair_id].aggregator.latestTimestamp()<now)
@@ -235,18 +235,24 @@ contract BlitzOption is  Ownable {
     ////////////////////// Setters
     /*BETS*/
     //addBet return:
-    // 0 as price not match
-    // 1 as OK
-    function addBet(uint _amount, uint _pair_id, uint _duration,uint8 _betType) public payable returns(uint _returnCode){
+    // -1 as cannot get latest price
+    // >0 as OK, openPrice
+    function addBet(uint _amount, uint _pair_id, uint _duration,uint8 _betType) public payable returns(int _returnCode){
         require(_pair_id<=pair_count,'pair not exist');
         require(pairs[_pair_id].status,'pair not active');
+        if (pairs[_pair_id].aggregator.latestTimestamp() <= 0)
+            return -1;
+        require(pairs[_pair_id].min_bet<=_amount,'invalid bet amount');
+        require(pairs[_pair_id].max_bet>=_amount,'invalid bet amount');
         require(_betType == 0 || _betType == 1,'invalid bet' );
         require(_duration>0,'invalid duration');
         require(validDuration[_duration] == _duration,'invalid duration');
         require(block.number<=validRequestTime[msg.sender],'request Expired');
-
+        
+        int openPrice = getLatestPrice(_pair_id);
+        
         bet_count++;
-        bets[bet_count] = Bet(msg.sender,_pair_id,msg.value,_duration,now,-1,-1,_betType,0);
+        bets[bet_count] = Bet(msg.sender,_pair_id,msg.value,_duration,now,openPrice,-1,_betType,0);
         
         //send money to Staking contract
         uint256 allowance = usdtToken.allowance(msg.sender,address(this));
@@ -255,10 +261,9 @@ contract BlitzOption is  Ownable {
         usdtToken.transferFrom(msg.sender,stakingContract,_amount);
         BlitzStakingInterface(stakingContract).receiveUSDT(_amount);
         
-        emit newBet(bet_count,msg.sender, _pair_id, msg.value, _duration,now, _betType);
-        return 1;
+        emit newBet(bet_count,msg.sender, _pair_id, msg.value, _duration,openPrice,now, _betType);
+        return openPrice;
     }
-
     function setOpenPrice(uint _bet_id,int _openPrice) external onlyOracle {
         require(_bet_id<=bet_count,'bet not exist');
         require(bets[_bet_id].status == 0,'bet not open');
