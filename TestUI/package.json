@@ -1,0 +1,67 @@
+{
+  "name": "TheSecretStash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "tronbox.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && npx rimraf docs && npx move-cli build docs",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "NAD0128668",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://www.TheSecretStash.com/dank"
+  },
+  "homepage": "https://www.TheSecretStash.com/dank",
+  "dependencies": {
+    "apexcharts": "^3.10.1",
+    "big-integer": "^1.6.48",
+    "bootstrap": "^4.3.1",
+    "chart.js": "^1.1.1",
+    "express": "^4.17.1",
+    "jquery": "^3.5.1",
+    "node-sass": "^4.13.0",
+    "nodejs": "0.0.0",
+    "react": "^16.12.0",
+    "react-apexcharts": "^1.3.3",
+    "react-arc-text": "^1.0.5",
+    "react-bootstrap": "^1.0.0-beta.16",
+    "react-chartjs": "^1.2.0",
+    "react-copy-to-clipboard": "^5.0.2",
+    "react-dom": "^16.12.0",
+    "react-player": "^1.14.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "^3.2.0",
+    "react-slick": "^0.25.2",
+    "react-sound": "^1.2.0",
+    "react-tooltip": "^3.11.1",
+    "sweetalert2": "^8.19.0",
+    "tronbox": "^2.7.4",
+    "trongrid": "^1.2.4",
+    "tronweb": "^2.8.1",
+    "universal-cookie": "^4.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "move-cli": "^1.2.1",
+    "rimraf": "^2.6.3",
+    "solc": "^0.4.25"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

@@ -212,8 +212,7 @@ contract BlitzOption is  Ownable {
     }
     
     ////////////////////// Send Request for latest update
-    
-    
+
     ////////////////////// Getters
     function getLatestPrice(uint _pair_id) public view returns (int)  {
         require(pairs[_pair_id].aggregator.latestTimestamp() > 0, "Round not complete");
@@ -246,6 +245,7 @@ contract BlitzOption is  Ownable {
         require(pairs[_pair_id].max_bet>=_amount,'invalid bet amount');
         require(_betType == 0 || _betType == 1,'invalid bet' );
         require(_duration>0,'invalid duration');
+        require(_amount>0,'invalid amount');
         require(validDuration[_duration] == _duration,'invalid duration');
         require(block.number<=validRequestTime[msg.sender],'request Expired');
         
@@ -261,7 +261,7 @@ contract BlitzOption is  Ownable {
         usdtToken.transferFrom(msg.sender,stakingContract,_amount);
         BlitzStakingInterface(stakingContract).receiveUSDT(_amount);
         
-        emit newBet(bet_count,msg.sender, _pair_id, msg.value, _duration,openPrice,now, _betType);
+        emit newBet(bet_count,msg.sender, _pair_id, _amount, _duration,openPrice,now, _betType);
         return openPrice;
     }
     function setOpenPrice(uint _bet_id,int _openPrice) external onlyOracle {
