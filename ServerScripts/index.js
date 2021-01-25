@@ -27,6 +27,7 @@ const tronWeb = new TronWeb({
 
 const checkNewBet = async (_size) => {
 	console.log('Checking latest '+_size+' events...');
+	console.log(process.env.OPTION_ADDRESS);
   	let Events = [];
     await tronWeb.getEventResult(process.env.OPTION_ADDRESS, {size:_size}).then(result => {
             Events = result;
@@ -34,10 +35,22 @@ const checkNewBet = async (_size) => {
     let leng = Events.length;
     console.log('Events Length',leng);
     const contract = await tronWeb.contract().at(process.env.OPTION_ADDRESS);
+    let currentBlock = await tronWeb.trx.getCurrentBlock();
+    let currentBlockTime = currentBlock.block_header.raw_data.timestamp/1000;	//seconds
+    console.log('currentBlockTime',currentBlockTime);
+
     for (var i=0;i<leng;i++){
-    	let res = await contract.pairs(Events[i].result._pair_id).call();
-    	if (res.status == 0)
-    		console.log(res);
+    	if (Events[i].name== 'newBet'){
+    		let res = await contract.bets(Events[i].result._bet_id).call();
+	    	if (res.status==0){
+	    		let betTime = parseInt(res.betTime._hex);
+	    		let duration = parseInt(res.duration._hex);
+	    		console.log('Open Bet:',Events[i].result._bet_id,betTime,duration);
+	    		//if 
+
+	    	}
+    	}
+    	
     }
 }
 
