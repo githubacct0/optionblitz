@@ -1,2 +1,5 @@
 ._*
 build
+node_modules
+.env
+
