@@ -24,6 +24,7 @@ export default class Home extends Component {
     this.loaded = false;
     this.duration = 10;
     this.bet = 0;
+    this.delay = 0;
 
   }
   async tick() { 
@@ -35,15 +36,18 @@ export default class Home extends Component {
           TRX_balance: await tron.getTRXBalance(utils.address),
           BTCUSDpair: await option.pairs(1)
         },this.forceUpdate());
+        this.getTransactions();
         this.loaded = true;
       }
         
     }
     this.setState({
       BTCUSD:await price.getBTCUSD()
-    })
+    });
+
     this.getTransactions();
-    
+
+
     
   }
   async getTransactions(){
@@ -87,23 +91,49 @@ export default class Home extends Component {
 
   }
   async callput(_pairID,_type){
-    this.setState({message:"Please wait..."});
-    let res = await option.requestPriceUpdate(_pairID);
+    if (!tron.tronWeb){
+        this.setState({message:"Please wait for system to finish loading and try again"});
+        return;
+    }
+    //TODO check TRX balance
+    if (this.state.TRX_balance<=10){
+      alert('Your TRX balance is low, you might not have enough TRX to pay for transaction fee');
+    }
+    let currentRound = await option.latestRound();
+
+    this.setState({message:"Approving contract to spend " + this.bet + " USDT ..."});
+    let res = await tron.Approve(option.OPTION_Address,parseInt(this.bet*1000000),tron.USDT_Address);
     if (!res){
       this.setState({message:"Something wrong with your request, please retry!"});
       return;
     }
+    this.setState({message:"Requesting latest Price from Oracle Contract ..."});
+    res = await option.requestPriceUpdate(_pairID);
+    if (!res){
+      this.setState({message:"Something wrong with your request, please retry!"});
+      return;
+    }
+
+    this.setState({message:"Requesting latest Price from Oracle Contract ..."});
     res = await option.getLatestPrice(_pairID);
     if (!res){
       this.setState({message:"Something wrong with your request, please retry!"});
       return;
     }
-    this.setState({message:"Placing CALL bet at " + res + " for " + this.duration + " seconds"});
-    res = await tron.Approve(option.OPTION_Address,parseInt(this.bet*1000000),tron.USDT_Address);
-    if (!res){
-      this.setState({message:"Something wrong with your request, please retry!"});
-      return;
+
+    let newRound = await option.latestRound();
+    let timeout = 0;
+    while (currentRound != newRound){
+        newRound = await option.latestRound();
+        await utils.delay(100)
+        timeout++;
+        if (timeout > 50){
+            this.setState({message:"Something wrong with your request, please retry!"});
+            return;
+        }
     }
+    this.setState({message:"Placing CALL bet at " + res + " for " + this.duration + " seconds ..."});
+    
     //_amount, _pair_id, _duration, _betType
     res = await option.addBet(parseInt(this.bet*1000000),_pairID,this.duration,_type);
     if (!res){
@@ -111,7 +141,7 @@ export default class Home extends Component {
       return;
     }
     this.setState({message:"Your bet request has been sent successfully!"});
-
+    
   }
   selectDuration(){
     var e = document.getElementById("duration");
@@ -142,8 +172,15 @@ export default class Home extends Component {
                     <div className="row form-group">
                       
                       <div className="col-md-12">
-                      <label className="text-black" for="subject">Your Address:</label> <br/>
-                        {utils.address} <br/>
+                        
+                        <label className="text-black" for="subject">BTC-USD Oracle:</label> <br/>
+                        <a href={tron.tronScanContract + utils.address} target="_blank">{option.BTC_USD_AggregatorAddress}</a><br/>
+                        <label className="text-black" for="subject">Option Contract:</label> <br/>
+                        <a href={tron.tronScanContract + utils.address} target="_blank">{option.OPTION_Address}</a><br/>
+                        
+                        <label className="text-black" for="subject">Your Address:</label> <br/>
+                        <a href={tron.tronScanAddress + utils.address} target="_blank">{utils.address}</a><br/>
+                        
                         <label className="text-black" for="subject">Your Balance:</label> <br/>
                         {this.state.USDT_balance} USDT <br/>
                         {this.state.TRX_balance} TRX
@@ -210,13 +247,16 @@ export default class Home extends Component {
                         <table className="custom-table">
                             <tbody><tr>
                               <th>Event Name</th>
+                              <th>Bet ID</th>
                               <th>User</th>
                               <th>Transaction ID</th>
                               <th>Pair</th>
                               <th>Time</th>
                               <th>Amount</th>
                               <th>Duration</th>
+                              <th>Round ID</th>
                               <th>Open Price</th>
+                              <th>Close Price</th>
                               <th>Type</th>
                               
                             </tr>
@@ -226,20 +266,25 @@ export default class Home extends Component {
                               {this.state.trans.map((tran, index) => (
                                 <tr key={index}>
                                   <td>{tran.name}</td>
+                                  <td>{tran.result._bet_id} </td>
                                   { tran.name == 'newBet' ?
                                     <td><a href={tron.tronScanAddress + tron.tronWeb.address.fromHex(tran.result._caller)} target="_blank">{utils.truncateStr(tron.tronWeb.address.fromHex(tran.result._caller), 5)}</a></td>
                                     :
                                     <td></td>
                                   }
+              
                                   <td><a href={tron.tronScanTransaction + tran.transaction} target="_blank">{utils.truncateStr(tran.transaction, 5)}</a></td>
                                   { tran.name == 'newBet' ?
                                     <td>BTC-USD</td>
                                     :
                                     <td></td>
                                   }
-                                  <td>{utils.convertTimeStamp(tran.result._betTime * 1000)}</td>
+                                  <td>{utils.convertTimeStamp(tran.timestamp)}</td>
                                   { tran.name == 'newBet' ?
                                     <td>{tran.result._amount/1000000} USDT</td>
+                                    :
+                                    tran.name == 'betClosed' ?
+                                    <td>{tran.result.wonAmount/1000000} USDT</td>
                                     :
                                     <td></td>
                                   }
@@ -248,13 +293,27 @@ export default class Home extends Component {
                                     :
                                     <td></td>
                                   }
-                                  { tran.name == 'newBet' ?
+                                  { tran.name == 'newBet' || tran.name == 'betClosed' ?
+                                    <td><a href={tron.tronScanContract + option.BTC_USD_AggregatorAddress + '/code'} target="_blank" >{tran.result._roundID}</a></td>
+                                    :
+                                    <td></td>
+                                  }
+                                  { tran.name == 'newBet' || tran.name == 'betClosed' ?
                                     <td>{tran.result._openPrice/1000000}</td>
+                                    :
+                                    <td></td>
+                                  }
+                                  { 
+                                    tran.name == 'betClosed' ?
+                                    <td>{tran.result._closedPrice/1000000}</td>
                                     :
                                     <td></td>
                                   }
                                   { tran.name == 'newBet' ?
                                     <td>{tran.result._betType == 0 ? 'CALL' : 'PUT'}</td>
+                                    :
+                                    tran.name == 'betClosed' ?
+                                    <td>{tran.result.won =='true' ? 'WON' : 'LOST'}</td>
                                     :
                                     <td></td>
                                   }

@@ -139,7 +139,8 @@ interface BlitzStakingInterface{
 */
 
 contract BlitzOption is  Ownable {
-    using SafeMath for uint256;
+    
+    using SafeMath for uint;
 
     address public oracle;
     address public stakingContract = address(0x410DD7C51F8DA12479FF138865EA54960F365B2E94);         //TBEQGWtRwZPDWw3XZ8gtMShJMiDs3FM1v2
@@ -170,7 +171,9 @@ contract BlitzOption is  Ownable {
         uint            duration;           //in seconds 
         uint            betTime;
         int             openPrice;
+        uint            openroundID;
         int             closedPrice;
+        uint            closedroundID;
         uint8           betType;            //CALL is 0 and PUT is 1 note: Calls -- Up; Puts -- Down
         uint8           status;             //OPEN is 0 - CLOSED is 1 - CANCELLED is 2
     } 
@@ -194,8 +197,8 @@ contract BlitzOption is  Ownable {
     //////////////////////
     // Events
     //////////////////////
-    event newBet(uint _bet_id,address _caller,uint _pair_id, uint _amount, uint _duration,int _openPrice,uint _betTime,uint8 _betType);
-    event betClosed(uint _bet_id,int _closedPrice,bool won);
+    event newBet(uint _bet_id,address _caller,uint _pair_id, uint _amount, uint _duration,int _openPrice,uint _roundID,uint _betTime,uint8 _betType);
+    event betClosed(uint _bet_id,int _openPrice,int _closedPrice,uint _roundID,bool won, uint wonAmount,uint8 _betType,uint winningFactor);
     event betCancelled(uint _bet_id);
     event requestUpdate(address _caller,uint _pair_id);
     
@@ -212,7 +215,7 @@ contract BlitzOption is  Ownable {
     }
     
     ////////////////////// Send Request for latest update
-
+    
     ////////////////////// Getters
     function getLatestPrice(uint _pair_id) public view returns (int)  {
         require(pairs[_pair_id].aggregator.latestTimestamp() > 0, "Round not complete");
@@ -250,9 +253,9 @@ contract BlitzOption is  Ownable {
         require(block.number<=validRequestTime[msg.sender],'request Expired');
         
         int openPrice = getLatestPrice(_pair_id);
-        
+        uint roundID = pairs[_pair_id].aggregator.latestRound();
         bet_count++;
-        bets[bet_count] = Bet(msg.sender,_pair_id,msg.value,_duration,now,openPrice,-1,_betType,0);
+        bets[bet_count] = Bet(msg.sender,_pair_id,_amount,_duration,now,openPrice,roundID,-1,0,_betType,0);
         
         //send money to Staking contract
         uint256 allowance = usdtToken.allowance(msg.sender,address(this));
@@ -261,7 +264,7 @@ contract BlitzOption is  Ownable {
         usdtToken.transferFrom(msg.sender,stakingContract,_amount);
         BlitzStakingInterface(stakingContract).receiveUSDT(_amount);
         
-        emit newBet(bet_count,msg.sender, _pair_id, _amount, _duration,openPrice,now, _betType);
+        emit newBet(bet_count,msg.sender, _pair_id, _amount, _duration,openPrice,roundID,now, _betType);
         return openPrice;
     }
     function setOpenPrice(uint _bet_id,int _openPrice) external onlyOracle {
@@ -270,33 +273,39 @@ contract BlitzOption is  Ownable {
         bets[_bet_id].openPrice = _openPrice;
         
     }
-    function closeBet(uint _bet_id,int _closedPrice) public onlyOracle {
+    function closeBet(uint _bet_id) public onlyOracle {
         require(_bet_id<=bet_count,'bet not exist');
         require(bets[_bet_id].status == 0,'bet already closed');
         
-        bets[_bet_id].closedPrice = _closedPrice;
+        uint roundID = pairs[bets[_bet_id].pair_id].aggregator.latestRound();
+        require(roundID>bets[_bet_id].openroundID);
+        
+        bets[_bet_id].closedPrice = getLatestPrice(bets[_bet_id].pair_id);
         bets[_bet_id].status = 1;
+        bets[_bet_id].closedroundID = roundID;
+        
         uint winningAmount = 0;
         if (bets[_bet_id].betType == 0) // CALL UP
         {
-            if (_closedPrice>bets[_bet_id].openPrice)
-                winningAmount = bets[_bet_id].amount.mul(pairs[bets[_bet_id].pair_id].winningFactor).div(1000);
+            if (bets[_bet_id].closedPrice>bets[_bet_id].openPrice)
+                winningAmount = bets[_bet_id].amount * pairs[bets[_bet_id].pair_id].winningFactor/1000;
         }
         else if (bets[_bet_id].betType == 1) // PUT DOWN
         {
-            if (_closedPrice<bets[_bet_id].openPrice)
-                winningAmount = bets[_bet_id].amount.mul(pairs[bets[_bet_id].pair_id].winningFactor).div(1000);
+            if (bets[_bet_id].closedPrice<bets[_bet_id].openPrice)
+                winningAmount = bets[_bet_id].amount * pairs[bets[_bet_id].pair_id].winningFactor/1000;
         }
         if (winningAmount > 0){
             //PAY the Winner from Staking Contract
             BlitzStakingInterface(stakingContract).sendUSDT(bets[_bet_id].caller,winningAmount);
-            emit betClosed(_bet_id,_closedPrice,true);
+            emit betClosed(_bet_id,bets[_bet_id].openPrice,bets[_bet_id].closedPrice,roundID,true,winningAmount,bets[_bet_id].betType,pairs[bets[_bet_id].pair_id].winningFactor);
         }
         else 
-            emit betClosed(_bet_id,_closedPrice,false);
+            emit betClosed(_bet_id,bets[_bet_id].openPrice,bets[_bet_id].closedPrice,roundID,false,0,bets[_bet_id].betType,pairs[bets[_bet_id].pair_id].winningFactor);
     }
+
     function cancelBet(uint _bet_id) public {
-        require(bets[_bet_id].caller == msg.sender,'not bet owner or contract owner');
+        require(bets[_bet_id].caller == msg.sender || msg.sender == oracle,'not bet owner or contract owner');
         require(bets[_bet_id].status == 0,'bet not open');
         
         bets[_bet_id].status = 2;
