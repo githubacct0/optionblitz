@@ -7,6 +7,7 @@ const tron = {
 
 	tronScanAddress: "https://nile.tronscan.org/#/address/",           //for mainnet remove shasta.
     tronScanTransaction: "https://nile.tronscan.org/#/transaction/",
+    tronScanContract: "https://nile.tronscan.org/#/contract/",
 	tronWeb: null,
 	async getTRXBalance(address) {
 		if (!this.tronWeb) return 0;

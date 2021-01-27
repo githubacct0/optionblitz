@@ -2,9 +2,8 @@
 import tron from './tron';
 
 const option = {
-	//Tokens
-	OPTION_Address: 'TCsR3K7ZWaz9kgejcRdX1v7SdUBTsGRpDB',	
-	
+	OPTION_Address: 'TH4VYJ8ps5WVHrTvWaCJLTFFYXNjxJBn3M',	
+	BTC_USD_AggregatorAddress:'TLNXr6KA8iQ7Gig8pBSy9R4nSR4PMvKYY4',
 	async requestPriceUpdate(_pair_id){
 		try {
 			if (!tron.tronWeb) return null;
@@ -19,6 +18,20 @@ const option = {
 		  console.log(err);
 		  return null;
 		}
+	},
+	async latestRound(){
+		try {
+			//console.log(_pair_id);
+			if (!tron.tronWeb) return null;
+
+            const contract = await tron.tronWeb.contract().at(this.BTC_USD_AggregatorAddress);
+            let res = await contract.latestRound().call();
+            console.log(parseInt(res._hex));
+            return parseInt(res._hex);
+        } catch (err) {
+            console.log('latestRound:', err);
+            return 0;
+        }
 	},
 	async pairs(_pair_id){
 
