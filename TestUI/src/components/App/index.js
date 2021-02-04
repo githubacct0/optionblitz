@@ -12,6 +12,7 @@ import Home from '../Home';
 import ContactPage from '../Contact';
 import RequestPage from '../Request';
 import AboutPage from '../About';
+import WalletPage from '../Wallet';
 import Nav from '../Nav';
 import utils from "../../utils";
 import tron from "../../utils/tron";
@@ -77,9 +78,8 @@ class App extends Component {
               <div>
                 <Route path="/" exact component={Home} />
                 <Route path="/home" component={Home} />
-                <Route path="/about" component={AboutPage} />
-                <Route path="/request" component={RequestPage} />
-                <Route path="/contact" component={ContactPage} />
+                <Route path="/wallet" component={WalletPage} />
+                
                 
               </div>
           </HashRouter >

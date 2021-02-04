@@ -6,6 +6,7 @@ import utils from "../../utils";
 import tron from "../../utils/tron";
 import option from "../../utils/option";
 import price from "../../utils/price";
+import staking from "../../utils/staking";
 import $ from 'jquery';
 
 export default class Home extends Component {
@@ -17,7 +18,8 @@ export default class Home extends Component {
       message:'',
       BTCUSD:0,
       BTCUSDpair:null,
-      trans:[]
+      trans:[],
+      ingameUSDT_balance:0,
     };
     this.tick = this.tick.bind(this);
     this.intervalHandle = null;
@@ -34,7 +36,8 @@ export default class Home extends Component {
         this.setState({
           USDT_balance:await tron.getUSDTBalance(utils.address),
           TRX_balance: await tron.getTRXBalance(utils.address),
-          BTCUSDpair: await option.pairs(1)
+          BTCUSDpair: await option.pairs(1),
+          ingameUSDT_balance: await staking.getUSDTBalance(utils.address),
         },this.forceUpdate());
         this.getTransactions();
         this.loaded = true;
@@ -95,20 +98,18 @@ export default class Home extends Component {
         this.setState({message:"Please wait for system to finish loading and try again"});
         return;
     }
+    if (this.bet > this.state.ingameUSDT_balance){
+        this.setState({message:"You dont have enough USDT"});
+        return;
+    }
     //TODO check TRX balance
     if (this.state.TRX_balance<=10){
       alert('Your TRX balance is low, you might not have enough TRX to pay for transaction fee');
     }
     let currentRound = await option.latestRound();
 
-    this.setState({message:"Approving contract to spend " + this.bet + " USDT ..."});
-    let res = await tron.Approve(option.OPTION_Address,parseInt(this.bet*1000000),tron.USDT_Address);
-    if (!res){
-      this.setState({message:"Something wrong with your request, please retry!"});
-      return;
-    }
     this.setState({message:"Requesting latest Price from Oracle Contract ..."});
-    res = await option.requestPriceUpdate(_pairID);
+    let res = await option.requestPriceUpdate(_pairID);
     if (!res){
       this.setState({message:"Something wrong with your request, please retry!"});
       return;
@@ -141,7 +142,7 @@ export default class Home extends Component {
       return;
     }
     this.setState({message:"Your bet request has been sent successfully!"});
-    
+    this.loaded = false;
   }
   selectDuration(){
     var e = document.getElementById("duration");
@@ -183,7 +184,9 @@ export default class Home extends Component {
                         
                         <label className="text-black" for="subject">Your Balance:</label> <br/>
                         {this.state.USDT_balance} USDT <br/>
-                        {this.state.TRX_balance} TRX
+                        {this.state.TRX_balance} TRX <br/>
+                        <label className="text-black" for="subject">Your in-game Balance:</label> <br/>
+                        {this.state.ingameUSDT_balance} USDT
                       </div>
 
                     </div>

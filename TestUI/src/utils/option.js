@@ -2,7 +2,7 @@
 import tron from './tron';
 
 const option = {
-	OPTION_Address: 'TH4VYJ8ps5WVHrTvWaCJLTFFYXNjxJBn3M',	
+	OPTION_Address: 'TMieGs9z6dCTNCfxz6piqWHD1ugWgjwYx5',	
 	BTC_USD_AggregatorAddress:'TLNXr6KA8iQ7Gig8pBSy9R4nSR4PMvKYY4',
 	async requestPriceUpdate(_pair_id){
 		try {

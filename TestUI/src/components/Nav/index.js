@@ -38,6 +38,7 @@ const Nav = props => {
 
                     <ul className="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
                       <li><a href="./#/" className="nav-link">Home</a></li>
+                      <li><a href="./#/wallet" className="nav-link">Wallet</a></li>
                       
                     </ul>
 
