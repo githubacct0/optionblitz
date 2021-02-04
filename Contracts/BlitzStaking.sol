@@ -117,28 +117,112 @@ contract TRC20Interface {
 contract BlitzStaking is  Ownable {
     using SafeMath for uint256;
     
-    TRC20Interface usdtToken = TRC20Interface(0x412CA9216290851A71AAECE65924034006DA8D2E24);         //TE3MLtNHrkddRNgy6tNi7bfUVRyAe9BpVL
+    TRC20Interface usdtToken        = TRC20Interface(0x412CA9216290851A71AAECE65924034006DA8D2E24);         //TE3MLtNHrkddRNgy6tNi7bfUVRyAe9BpVL
+    TRC20Interface blitzToken       = TRC20Interface(0x4134045ADBDDF04FC45AB3C7FFA561482247AD4B75);         //TEiFMcs4ghFGBSNpBVpLWEuC2Nbj4c1zP2
+    address public TRX_token        = address(0x410000000000000000000000000000000000000000);                //'T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb';
     
     mapping (address => bool) public validContractCaller;
     
     uint public platformUSDT;
     
+    struct User {
+        uint   usdt_balance;
+        uint   blitz_balance;
+        uint   usdt_staked;
+        uint   blitz_staked;
+    }
+    mapping(address => User) public users;
+    
+    event depositUSDTEvent(address user, uint256 amount);
+    event withdrawUSDTEvent(address user, uint256 amount);
+    
+    event depositBLIZTEvent(address user, uint256 amount);
+    event withdrawBLITZEvent(address user, uint256 amount);
+    
     constructor() public{        
         
     }
-    function receiveUSDT(uint _amount) onlyValidContractCaller external returns(uint){
-        platformUSDT = platformUSDT.add(_amount);
-        return platformUSDT;
-    }
-    function sendUSDT(address _to, uint _amount) onlyValidContractCaller external returns(uint){
-        require(_to != address(0),'invalid address');
-        require(_amount >0,'invalid amount');
-        require(_amount<=platformUSDT,'platform run out of USDT');
+    
+    function withdrawUSDT(uint _amount) public {
+        require(_amount > 0);
+        require(users[msg.sender].usdt_balance >= _amount);
+        require(usdtToken.balanceOf(address(this)) >= _amount,'contract has no usdt');
         
-        platformUSDT = platformUSDT.sub(_amount);
-        usdtToken.transfer(_to,_amount);
-        return platformUSDT;
+        users[msg.sender].usdt_balance = users[msg.sender].usdt_balance.sub(_amount);
+        
+        usdtToken.transfer(msg.sender, _amount);
+    
+        emit withdrawUSDTEvent(msg.sender, _amount);
     }
+    function withdrawBLITZ(uint _amount) public {
+        require(_amount > 0);
+        require(users[msg.sender].blitz_balance >= _amount);
+        require(blitzToken.balanceOf(address(this)) >= _amount,'contract has no blitz');
+        
+        users[msg.sender].blitz_balance = users[msg.sender].blitz_balance.sub(_amount);
+        
+        blitzToken.transfer(msg.sender, _amount);
+    
+        emit withdrawBLITZEvent(msg.sender, _amount);
+    }
+    function depositUSDT(uint _amount) public {
+        require(_amount > 0);
+        uint remaining = usdtToken.allowance(msg.sender, address(this));
+        require(remaining >= _amount);
+        
+        require(usdtToken.transferFrom(msg.sender, address(this), _amount));
+        
+        users[msg.sender].usdt_balance = users[msg.sender].usdt_balance.add(_amount);
+       
+        emit depositUSDTEvent(msg.sender, _amount);
+    }
+    function depositBLITZ(uint _amount) public {
+        require(_amount > 0);
+        uint remaining = blitzToken.allowance(msg.sender, address(this));
+        require(remaining >= _amount);
+        
+        require(blitzToken.transferFrom(msg.sender, address(this), _amount));
+        
+        users[msg.sender].blitz_balance = users[msg.sender].blitz_balance.add(_amount);
+       
+        emit depositBLIZTEvent(msg.sender, _amount);
+    }
+    
+    function getUSDTBalance(address _user) external view returns(uint){
+        return users[_user].usdt_balance;
+    }
+    function getBLITZBalance(address _user) external view returns(uint){
+        return users[_user].blitz_balance;
+    }
+    
+    function reduceUserUSDTBalance(address _user,uint _amount) onlyValidContractCaller external returns(uint){
+        require(users[_user].usdt_balance>=_amount,'not enough balance');
+        users[_user].usdt_balance = users[_user].usdt_balance.sub(_amount);
+    }
+    function reduceUserBLITZBalance(address _user,uint _amount) onlyValidContractCaller external returns(uint){
+        require(users[_user].blitz_balance>=_amount,'not enough balance');
+        users[_user].blitz_balance = users[_user].blitz_balance.sub(_amount);
+    }
+    function addUserUSDTBalance(address _user,uint _amount) onlyValidContractCaller external returns(uint){
+        users[_user].usdt_balance = users[_user].usdt_balance.add(_amount);
+    }
+    function addUserBLITZBalance(address _user,uint _amount) onlyValidContractCaller external returns(uint){
+        users[_user].blitz_balance = users[_user].blitz_balance.add(_amount);
+    }
+    
+    // function receiveUSDT(uint _amount) onlyValidContractCaller external returns(uint){
+    //     platformUSDT = platformUSDT.add(_amount);
+    //     return platformUSDT;
+    // }
+    // function sendUSDT(address _to, uint _amount) onlyValidContractCaller external returns(uint){
+    //     require(_to != address(0),'invalid address');
+    //     require(_amount >0,'invalid amount');
+    //     require(_amount<=platformUSDT,'platform run out of USDT');
+        
+    //     platformUSDT = platformUSDT.sub(_amount);
+    //     usdtToken.transfer(_to,_amount);
+    //     return platformUSDT;
+    // }
     /*OTHERS*/
     function setValidContractCaller(address _contractAddress, bool _status) onlyOwner public{
         validContractCaller[_contractAddress] = _status;      //

@@ -124,8 +124,12 @@ interface AggregatorInterface {
 }
 
 interface BlitzStakingInterface{
-    function sendUSDT(address _to, uint _amount) external returns(uint);
-    function receiveUSDT(uint _amount) external returns(uint);
+    function reduceUserUSDTBalance(address _user,uint _amount)  external returns(uint);
+    function reduceUserBLITZBalance(address _user,uint _amount)  external returns(uint);
+    function addUserUSDTBalance(address _user,uint _amount)  external returns(uint);
+    function addUserBLIZBalance(address _user,uint _amount)  external returns(uint);
+    function getUSDTBalance(address _user) external view returns(uint);
+    function getBLITZBalance(address _user) external view returns(uint);
 }
 /*
 #. Aggregator BTC-USD       TLNXr6KA8iQ7Gig8pBSy9R4nSR4PMvKYY4
@@ -143,7 +147,7 @@ contract BlitzOption is  Ownable {
     using SafeMath for uint;
 
     address public oracle;
-    address public stakingContract = address(0x410DD7C51F8DA12479FF138865EA54960F365B2E94);         //TBEQGWtRwZPDWw3XZ8gtMShJMiDs3FM1v2
+    address public stakingContract = address(0x41A0387726DC06FCC37526374588D649BD513C9AFF);         //TQaNm3E5kUHRyJ8TXQjW4WhFmZkh2Z31BY
     TRC20Interface usdtToken = TRC20Interface(0x412CA9216290851A71AAECE65924034006DA8D2E24);         //TE3MLtNHrkddRNgy6tNi7bfUVRyAe9BpVL
     
     /*
@@ -251,18 +255,14 @@ contract BlitzOption is  Ownable {
         require(_amount>0,'invalid amount');
         require(validDuration[_duration] == _duration,'invalid duration');
         require(block.number<=validRequestTime[msg.sender],'request Expired');
+        require(BlitzStakingInterface(stakingContract).getUSDTBalance(msg.sender)>=_amount,'not enough balance');
         
         int openPrice = getLatestPrice(_pair_id);
         uint roundID = pairs[_pair_id].aggregator.latestRound();
         bet_count++;
         bets[bet_count] = Bet(msg.sender,_pair_id,_amount,_duration,now,openPrice,roundID,-1,0,_betType,0);
-        
-        //send money to Staking contract
-        uint256 allowance = usdtToken.allowance(msg.sender,address(this));
-        require (allowance>=_amount,'allowance error');
-        
-        usdtToken.transferFrom(msg.sender,stakingContract,_amount);
-        BlitzStakingInterface(stakingContract).receiveUSDT(_amount);
+       
+        BlitzStakingInterface(stakingContract).reduceUserUSDTBalance(msg.sender,_amount);
         
         emit newBet(bet_count,msg.sender, _pair_id, _amount, _duration,openPrice,roundID,now, _betType);
         return openPrice;
@@ -288,16 +288,16 @@ contract BlitzOption is  Ownable {
         if (bets[_bet_id].betType == 0) // CALL UP
         {
             if (bets[_bet_id].closedPrice>bets[_bet_id].openPrice)
-                winningAmount = bets[_bet_id].amount * pairs[bets[_bet_id].pair_id].winningFactor/1000;
+                winningAmount = bets[_bet_id].amount.mul(pairs[bets[_bet_id].pair_id].winningFactor).div(1000);
         }
         else if (bets[_bet_id].betType == 1) // PUT DOWN
         {
             if (bets[_bet_id].closedPrice<bets[_bet_id].openPrice)
-                winningAmount = bets[_bet_id].amount * pairs[bets[_bet_id].pair_id].winningFactor/1000;
+                winningAmount = bets[_bet_id].amount.mul(pairs[bets[_bet_id].pair_id].winningFactor).div(1000);
         }
         if (winningAmount > 0){
             //PAY the Winner from Staking Contract
-            BlitzStakingInterface(stakingContract).sendUSDT(bets[_bet_id].caller,winningAmount);
+            BlitzStakingInterface(stakingContract).addUserUSDTBalance(bets[_bet_id].caller,winningAmount);
             emit betClosed(_bet_id,bets[_bet_id].openPrice,bets[_bet_id].closedPrice,roundID,true,winningAmount,bets[_bet_id].betType,pairs[bets[_bet_id].pair_id].winningFactor);
         }
         else 
