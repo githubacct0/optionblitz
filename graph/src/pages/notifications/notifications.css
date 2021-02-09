@@ -1,0 +1,183 @@
+.notificationContainer
+{background: #020610;
+}
+.notifications_bg{
+    background-image: url("../../assets/images/notifications_bg.png");
+    height: 275px;
+    padding: 10px;
+}
+
+.notificationLogo{
+    margin: 10px 0px;
+}
+.notifications_bg .titleRow{
+    align-items: center;
+    justify-content: space-between;
+}
+.notifications_bg .titleRow .notificationsLogoWrapper{
+    align-items: center;
+    display: flex;
+} 
+.notifications_bg .title{
+    color: white;
+    font-size: 14px;
+    margin-left: 10px;
+}
+.dropdown .menuItem{
+    color: #00CD86;
+    
+}
+.dropdown .downArrow{
+    margin-left: 10px;
+} 
+.alert{
+z-index: 100;
+width: 90%;
+position: absolute;
+background-color: #1A1D2A;
+border-radius: 8px;
+display: flex;
+flex-direction: row;
+justify-content: space-around;
+margin: auto;
+align-self: center;
+padding: 10px;
+align-items: baseline;
+margin-top: 75px;
+}
+.alert img{
+    width: 23px;
+    height: 23px;
+}
+.alert .content{
+    color: white;
+    font-size: 15px;
+    font-family: "Cabin";
+    margin-left: 5px;
+    margin-right: 5px;
+    align-self: center;
+    margin: 0px 10px;
+    text-align: left;
+
+}
+
+.alert .content .link{
+    font-family: "Conthrax";
+    font-size: 12px;
+    color: #00CD86;
+}
+
+.priceAlertBtn{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    background: linear-gradient(0deg, #0094E8, #0094E8), linear-gradient(0deg, #F08F1C, #F08F1C), #F08F1C;
+    border-radius: 4px;
+    width: 150px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-size: 12px;
+    font-family: "Conthrax";
+    text-transform: uppercase;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-top: 150px;
+}
+.notificationDayTitlte{
+color:#00CD86;
+font-size: 16px;
+margin: 0 10px;
+}
+.notifications{
+    background: rgba(2, 6, 16, 0.88);
+    border: 1px solid #1A223D; 
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+}
+.notifications .notification{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    
+}
+
+.notifications .notification .iconWrapper{
+    background: #1A1D2A;
+    padding: 5px;
+    display: flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.notifications .notification .notification_title,.notifications .notification .notification_action, .notifications .notification .notification_content,.notifications .notification .notification_payout
+{
+    color: white;
+    font-size: 11px;
+}
+.notifications .notification .notification_action{
+    background: linear-gradient(0deg, #F08F1C, #F08F1C), linear-gradient(0deg, #F08F1C, #F08F1C), #F08F1C;
+    border-radius: 4px;
+    padding:2px 5px;
+    margin: 0px 5px;
+    font-size: 10px;
+}
+.notifications .notification .notification_content{
+font-family: "Cabin";
+}
+
+.notifications .notification .notification_time{
+    font-size: 8px;
+    font-family: "Cabin";
+color:#59648A;
+margin-left: auto;
+}
+.notifications .notification .notification_col_wrapper{
+    justify-content: space-between;
+    align-items: stretch;
+    height: 40px;
+}
+.notifications .notification .notification_payout{
+    font-family: "Cabin";
+    font-size: 10px;
+    flex-direction: row;
+
+}
+.notifications .notification .notification_content_amount,.notifications .notification .notification_payout_amount_green,.notification_payout_amount_red{
+font-size: 16px;
+}
+
+.notifications .bottom_line{
+    border-bottom: 1px solid #1A223D;;
+}
+.notification_payout_amount_red{
+    color: red;
+}
+
+.notifications .notification .notification_content 
+{
+      color: white;
+      font-size: 10px;
+      font-family: "Cabin";
+}   
+.notifications .notification .notification_content .green_content
+{
+    color: #00CD86; 
+}
+
+.showmore{ 
+    align-self: center;
+    margin-bottom :50px;
+    align-items: "center";
+    text-transform: "uppercase";
+    color:#00CD86;
+    font-size: 14px;
+    }

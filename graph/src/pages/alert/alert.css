@@ -1,0 +1,7 @@
+.alertContainer{
+    background: #1B2B29;
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    
+}

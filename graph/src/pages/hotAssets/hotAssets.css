@@ -1,0 +1,85 @@
+.assets_bg{
+    background-image: url("../../assets/images/notifications_bg.png");
+    height: 275px;
+    padding: 10px;
+}
+.smAssetsWrapper{
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+justify-content: space-around;
+
+padding-top: 10px;
+padding-bottom: 25px;
+} 
+.chartWrapper{
+    display: flex;
+    flex-direction: column;
+    margin: 25px 10px;
+    border: 1px solid #1A223D;
+    border-radius: 8px;
+}
+.margin_minus{
+    margin-top: -75px;
+}
+.currency_wrapper{
+    display: flex;
+    flex-direction: column;
+/* margin-bottom: auto; */
+}
+.currency_wrapper .bitCoin{
+    margin-top: -10px;
+    margin-left: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+.currency_wrapper .usd{
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.chart_header{
+    display: flex;
+    flex-direction: row;
+    
+    align-items: center;
+    justify-content: space-around;
+}
+.chart_header .chart_title_wrapper{
+    display: flex;
+    flex-direction: column;
+}
+.title_txt{
+    font-size: 12px;
+    font-family: "Cabin";
+    color: #ACBDCF;
+    margin-right: 10px;
+}
+.chart_header .chart_title_stats{
+    color:#00CD86;
+    font-size: 12px;
+    font-family: "Cabin";
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.chart_header .chart_sub_text{
+    
+    font-size: 8px;
+    font-family: "Cabin";
+    color: #ACBDCF;
+    margin-right: 10px;
+}
+.chart_header .SelectWrapper .Select{
+    height: auto !important;
+    padding: 5px !important;
+    width: 100px !important;
+}
+.chart_header .SelectWrapper .Select .selectTitleWrapper .selectValue {
+    color: #ACBDCF !important;
+}
+.chart_header .Options .selectValue {
+color: #ACBDCF !important;
+}

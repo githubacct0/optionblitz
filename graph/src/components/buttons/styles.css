@@ -1,0 +1,14 @@
+.primaryButton{
+
+    color: white;
+    font-size: 15px;
+    background: #39967B;
+    border-radius: 10px;
+    border: none;
+    font-family: "Conthrax";
+    height: 40px;
+    width: 100%;
+    text-transform: uppercase;
+    
+   
+}

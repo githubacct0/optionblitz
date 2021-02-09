@@ -1,0 +1,102 @@
+
+.tab_section{
+    background: rgba(2, 6, 16, 0.88);
+    border: 1px solid #1A223D;
+    border-radius: 6px;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    }
+    .tab_section .tab_header{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0px;
+        margin: 5px;
+              border-bottom: 1px solid #1A223D;;
+    }
+.tab_section .tab_date_time{
+    color: #00CD86;
+    font-size: 12px;
+    margin-right: 0px;
+}
+.tab_section .tab_header .title_wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.tab_section .tab_header .title_wrapper .tab_section_title{
+    color: white;
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+
+.tab_section .tab_header .title_wrapper .tab_header_logo_wrapper .second_logo{
+margin-left: -10px;
+}
+.tab_section_content_row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+
+
+}
+.tab_section_content_row .row_item{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+    margin: 5px;
+    height: 50px;
+}
+
+.tab_section_content_row .row_item .row_item_title{
+    color: white;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+.tab_section_content_row .row_item .row_item_content{
+color: #00CD86;
+font-size: 10px;
+font-family: "Cabin";
+font-size: 12px;
+text-transform: uppercase;
+}
+.tab_content_border{
+    border-left: 1px solid #1A223D;
+    height: 30px;;
+    align-self: center;
+}
+.tab_content_border_bottom{
+    border-bottom: 1px solid #1A223D;
+    margin: 10px 0px;
+}
+.tab_section_btn_wrapper{
+    margin: 10px;
+}
+.tab_history_header{
+    overflow-x: scroll;
+    margin: 10px;
+}
+.tab_history_header tr{
+    border-bottom: 1px solid #1A223D;
+    
+}
+.tab_history_header tr th, tr td{
+    color: #59648A;
+    font-family: "Cabin";
+    font-size: 10px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    text-align: center;
+
+}
+tr td{
+    color: white;
+}

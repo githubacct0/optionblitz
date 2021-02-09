@@ -1,0 +1,187 @@
+.alertHeader{
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 10px;
+    padding: 10px;
+}
+.alertTitle{
+    color: white;
+    font-size: 14px;
+    margin-left: 10px;
+    text-transform: uppercase;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+th, td {
+    border-bottom: 1px solid #363949;
+    padding: 10px;
+  }
+ .heading{
+    color: #545870;
+    font-size: 13px;
+    font-family: "Cabin";
+    text-transform: capitalize;
+    
+}
+.tableDataRow{
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;  
+    padding: 10px; 
+    
+}
+ .data{
+    color: white;
+    font-size: 12px;
+    font-family: "Cabin";
+    text-align: center;
+}
+.newPriceAlertBtn{
+    padding: 15px;
+    color: white;
+    font-size: 15px;
+    background: #39967B;
+    border-radius: 10px;
+    border: none;
+    font-family: "Conthrax";
+    margin: 20px;
+    text-transform: uppercase;
+}
+.cancelAlerts{
+    margin-top: auto;
+    margin-bottom: 15px;
+    color: red;
+    font-family: "Conthrax";
+    font-size: 12px;
+    margin-left: auto;
+    margin-right: auto;
+    text-transform: uppercase;
+}
+
+.newAlertContainer{
+    background-color: #1A1D2A;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 20px;
+}
+.newAlertContainer .newAlertHeader{
+justify-content: space-between;
+align-items: center;
+display: flex;
+flex-direction: row;
+}
+.newAlertContainer .newAlertHeader .newAlertTitleWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.newAlertContainer .newAlertHeader .newAlertTitleWrapper img{
+margin-right: 10px;
+}
+.newAlertContainer .newAlertHeader .newAlertTitle{
+    color: white;
+    font-size: 14px;
+    font-family: "Conthrax";
+    text-transform: uppercase;
+}
+.currentPriceWrapper{
+    margin: 0 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.currentPriceWrapper .currentPriceLabel{
+    font-family: "Cabin";
+    font-size: 12px;
+    color: #59648A;
+}
+
+.currentPriceWrapper .currentPrice{
+    font-family: "Conthrax";
+    margin-left: 10px;
+    font-size: 12px;
+    color: #39967B;
+}
+
+.notificationWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 25px 10px;
+}
+.notificationWrapper .notifyText{
+    font-size: 12px;
+    color:white;
+    font-family: "Cabin";
+}
+.notificationWrapper .notificationType{
+    font-size: 10px;
+    font-family: "Conthrax";
+    color: white;
+    padding:9px;
+    height: 40px;
+    width: 50px;
+    background: rgba(2, 6, 16, 0.88);
+    text-transform: uppercase;
+}
+.notificationWrapper .activeNotificationType{
+    font-size: 9px;
+    font-family: "Conthrax";
+    color: white;
+    padding:10px;
+    height: 40px;
+    width: 50px;
+    background: #39967B;
+    text-transform: uppercase;
+}
+.notificationWrapper .equalBtns{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-left: auto;
+    
+}
+.notificationWrapper .equalBtns .alertAmmount{
+    margin-left: 10px;
+    margin-right: 10px;
+    font-family: "Cabin";
+    color: #39967B;
+}
+
+.alertCheckBoxWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 10px;
+}
+.alertCheckBoxWrapper .label{
+    color: white;
+    margin-left: 10px;
+    font-size: 10px;
+}
+
+.priceAlertLogo{
+    display: flex;
+    margin: 20px auto;   
+}
+.priceAlertContent{
+    display: block;
+    margin: 5px;
+    text-align: center;
+    font-size: 12px;
+    color: white;
+    font-family: "Cabin"; 
+}
+.priceAlertTitle{
+    font-size: 14px;
+    margin: 20px;
+    color: #00CD86;
+}

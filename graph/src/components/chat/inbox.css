@@ -1,0 +1,86 @@
+.bottom_wrapper{
+    display: flex;
+    flex-direction: row;
+    background: rgba(2, 6, 16, 0.88);
+    border: 1px solid #1A223D;
+    /* padding: 20px; */
+    border-radius: 8px;
+    margin-top: auto;
+    /* width: 75%; */
+    height: 48px;
+    align-self: stretch;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px
+}
+
+.inbox_wrapper{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+}
+.bottom_wrapper .input,.bottom_wrapper .input:focus{
+    flex: 0.90;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 10px;
+}
+.sendBtn{
+    width: 20px;
+    height: 20px;
+    align-self: center;
+    margin: auto;
+    flex: 0.05;
+}
+
+.message{
+    padding: 10px;
+    background-color: #1A1D2A;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.message .msg_text{
+    color: white;
+    font-family: "Cabin";
+    font-size: 12px;
+}
+
+.chat_msgs .self{    
+    margin-left: 100px;
+    margin-right: -5px;
+}
+.chat_msgs .other{
+    margin-right: 100px;
+    margin-left: -5px;
+}
+.self_tip,.other_tip{
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+.avatar_wrapper{
+    background-color: #1A1D2A;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px;
+    margin-right: -10px;
+    margin-top: auto;
+    display: flex;
+    padding: 5px 15px;
+    margin-bottom: 10px;
+}
+.avatar_wrapper .avatar{
+    color: white;
+    font-family: "Conthrax";
+    margin: auto;
+    display: flex;
+    text-align: center;
+    align-self: center;
+    text-transform: uppercase;
+}

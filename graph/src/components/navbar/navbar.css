@@ -1,0 +1,152 @@
+.navbarWrapper{
+    background-color: #020610;
+    padding:0px 5px;
+}
+.navbar{
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    padding:5px;
+    justify-content: space-around;
+    align-items: center;
+    
+    
+}
+.bottom_line{
+    border-bottom: rgba(89, 100, 138, 0.4) solid 1px;
+}
+.chatWrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+.chatWrapper .chatNotification{
+    width: 8px;
+    height: 8px;
+    margin-left: auto;
+    border-radius: 4px;
+    margin-bottom: 1px;
+    align-items:center;
+    justify-content: center;
+    background: linear-gradient(0deg, #FF2B24 -12.93%, #C71CFA 102.65%), linear-gradient(0deg, #EB2164, #EB2164), linear-gradient(0deg, #F753B4, #F753B4), linear-gradient(360deg, #FBAE17 0%, #FFFF00 100%), linear-gradient(158.76deg, #CD1426 13.99%, #FF498A 86.01%), linear-gradient(180deg, #FFFFFF 0%, #979CA7 100%), #FFFFFF;
+}
+.profile_nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: center;
+}
+.profileWrapper{
+display: flex;
+height: 25px;
+width: 25px;
+align-items: center;
+justify-content: center;
+border-radius: 15px;
+background-color: #53AE94;
+margin: auto;
+}
+.profileWrapper img{
+    margin: auto;
+}
+
+.currencyWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 2px;
+    
+}
+.currencyWrapper .ammount{
+color: white;
+align-self: baseline;
+font-size: 9px;
+font-family: "Raleway";
+}
+.currencyWrapper .currency{
+    color: #ACBDCF;
+    font-size: 9px;
+    font-family: "Raleway";
+}
+
+.tabs{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+}
+.tabWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.tab{
+    background: #1B1D2B;
+    border-radius: 0px 0px 0px 6.32836px;
+    padding: 12px;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    justify-self: stretch;
+
+    
+}
+.currency_wrapper{
+    display: flex;
+    flex-direction: column;
+
+}
+.currency_wrapper .bitCoin{
+    margin-top: -10px;
+    margin-left: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+.currency_wrapper .usd{
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+.tab .title_wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.tab_title{
+    font-size: 9px;
+    color: #ACBDCF;
+}
+.tab_content{
+font-size: 9px;
+color: #ACBDCF;
+}
+.closeWrapper{
+    background-color: #1B1D2B;
+    padding: 10px;
+    margin-left: 1px;
+    flex: 1;
+    display: flex;
+    align-self: stretch;
+    justify-self: stretch;
+}
+.add_tab{
+    margin-left: 10px;
+    margin-right: 5px;
+    align-self: stretch;
+    justify-self: stretch;
+    padding: 12px;
+}
+
+.navbar_login_btn{
+    background: linear-gradient(0deg, #F08F1C, #F08F1C), linear-gradient(0deg, #F08F1C, #F08F1C), #F08F1C;
+    border-radius: 4px;
+    width: 75px;
+    padding: 5px;
+    color: white;
+    border: none;
+}

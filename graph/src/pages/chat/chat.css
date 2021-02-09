@@ -1,0 +1,120 @@
+.bg_chat{
+    background-image: url("../../assets/images/trades_bg.png");
+    height: 35px;
+    padding: 10px 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.bg_live{
+    height: 150px !important;
+}
+.bg_live .SelectWrapper{
+    margin-left: 5px;
+    margin-right: 25px;
+    border: 1px solid #1A223D;
+    border-radius: 8px;
+}
+.bg_live .Options{    
+    width: 175px !important;
+    margin-left: 3px;
+    margin-top: -10px;
+    padding: 12px;
+}
+.bg_live .SelectWrapper,.bg_live .Select{
+    height: 25px !important;
+    width: 175px;
+}
+.bg_live .lg_stats{
+    font-size: 15px;
+    color: #ACBDCF;
+    text-align: right;
+    font-family: "Cabin";
+}
+.bg_live .md_stats{
+    font-size: 12px;
+    color: #ACBDCF;
+    text-align: right;
+    font-family: "Cabin";
+}
+
+.bg_live .sm_stats{
+    font-size: 10px;
+    color: #00CD86;
+    text-align: right;
+    font-family: "Cabin";
+}
+.bg_live .currency_pic{
+    width: 50px;
+    height: 50px;
+}
+.bg_chat .chat_header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+
+}
+
+.bg_chat .chat_header .chat_title{
+    text-transform: uppercase;
+    color: white;
+    font-size: 16px;
+    margin-left: 5px;
+}
+.tabs_wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 15px 0px;
+    
+}
+.tabs_wrapper .chats_tab{
+    border-bottom: solid 2px  #59648A;;
+    color: #59648A;
+    padding-bottom: 10px;
+    text-align: center;
+    width: 100%;
+    text-transform: uppercase;
+}
+.tabs_wrapper .chats_tab_active{
+    border-bottom: solid 2px #00CD86;
+    color: #00CD86;
+    padding-bottom: 10px;
+    text-align: center;   
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.bullets_wrapper{
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    justify-content: space-between;
+    width: 25px;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.bullets_wrapper .activeDot{
+width: 8px;
+height: 8px;
+background: #FFFFFF;
+box-shadow: 0px 0px 8px #FFFFFF;
+border-radius: 8px;
+
+}
+
+.bullets_wrapper .dot{
+width: 8px;
+height: 8px;
+border-radius: 8px;
+background: #434C6C;
+}
+.show_live_title{
+    color:white;
+    margin-left: 15px;
+    font-family: "Cabin";
+    font-size: 18px;
+}

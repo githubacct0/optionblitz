@@ -1,0 +1,68 @@
+:root{
+ primary:"#1B2B29",  
+}
+
+.col{
+    display: flex;
+    flex-direction: column;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+
+.select{
+background: rgba(2, 6, 16, 0.88);
+border: 1px solid #1A223D;
+border-radius: 3px;
+padding: 0px 5px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color:  #091117;
+    margin: 0; 
+    padding: 0;
+ }
+
+
+a{
+    text-decoration: none !important;
+}
+.primaryBtnWrapper{
+    margin: 20px;
+}
+
+.hamBurger
+{
+    height: 20px;
+    width: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 10px;
+}
+.hamBurger .hamBurgerLine{
+width: 25px;
+height: 2px;
+background: #FFFFFF;
+border-radius: 1px;
+}
+.align-center{
+    align-items: center;
+}
+.space-between{
+    justify-content: space-between;
+}
+.space-around{
+    justify-content: space-around;
+}
+.space-evenly{
+    justify-content: space-evenly;
+}
+.txt_white{
+    color: white;
+}

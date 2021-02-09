@@ -1,0 +1,104 @@
+.chat_container{
+    background-color: #1A1D2A;
+    border-radius: 6px;
+    padding: 20px 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.headset_logo{
+    margin-top: 25px;
+    align-self: center;
+    width: 40px;
+    height: 40px;
+}
+
+.chat_content{
+    color: white;
+    margin:15px;
+    text-align: center;
+    font-size: 15px;
+    font-family: "Cabin";
+}
+
+.detailsWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px 10px;
+}
+.detailsWrapper .label{
+    width: 50%;
+}
+.detailsWrapper .value{
+    width: 50%;
+}
+
+.detailsWrapper .select{
+    align-items: center;
+    justify-content: space-between;
+    width: 75px;
+    display: flex;
+    flex-direction: row;
+}
+
+.detailsWrapper .select img,.detailsWrapper .countries .country img{
+    align-self: center;
+    margin: 1px;
+    display: flex;
+}
+
+ .detailsWrapper .label{
+     text-transform: capitalize;
+     color: white;
+     font-size: 9px;
+     align-self: center;
+     
+ }
+ .detailsWrapper .value{
+     text-transform: capitalize;
+     color: #00CD86;
+     font-size: 9px;
+     align-self:  flex-start;
+ }
+
+ 
+.countryDropDown{
+    width: 50px;
+    height: 20px;
+}
+
+.detailsWrapper .selectWrapper{
+display: flex;
+flex-direction: column;
+}
+.detailsWrapper  .countries{
+    display: flex;
+    flex-direction: column;
+    width: 75px;
+    z-index: 100;
+    position: absolute;
+    margin-top: 30px;
+    background-color: #020610;
+    padding: 5px;
+}
+
+.detailsWrapper .country {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+.detailsWrapper .country span{
+    color: white; 
+    font-size: 8px;
+}
+
+.live_chat_btn_wrapper{
+    margin: 10px;
+    width: 90%;
+}

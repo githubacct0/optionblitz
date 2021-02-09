@@ -1,0 +1,269 @@
+.balance{
+display: flex;
+flex-direction: column;
+margin: 10px;
+background-color: rgba(2, 6, 16, 0.88);
+border: 1px solid #1A223D;
+border-radius: 8px;
+}
+.balance .select{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 5px;
+    height: 50px;
+}
+.select .wrapper{
+    align-items: center;
+}
+.select .profileWrapper {
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+}
+.select .profileWrapper .profile{
+    width: 45px;
+    height: 45px;
+    border-radius: 22.5px;   
+
+}
+
+.select .profileWrapper .tronLogo{
+ 
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-top: -20px;
+    margin-left: 20px;
+    padding: 2px;
+    align-items: center;
+    justify-content: center;
+}
+.select .profileWrapper .tronLogo img{
+    margin: auto;
+    display: flex;
+    width: 12px;
+    height: 12px;
+}
+
+.select .balanceWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 40px;
+margin-left: 10px;
+}
+.select .balanceWrapper .label{
+    color: white;
+    font-size: 11px;
+}
+.select .balanceWrapper .ammount{
+    color:#00CD86;
+    font-size: 12px;
+    font-family: "Cabin" !important;
+}
+
+.balance .expandedWrapper{
+    display: flex;
+    flex-direction: column;   
+}
+.balance .expandedWrapper .tabsWrapper{
+    display: flex;
+    flex-direction: row;
+    padding: 15px 0px;
+    justify-content: space-evenly;
+}
+.balance .expandedWrapper .tabsWrapper .tab{
+    color: #59648A;
+    font-size: 14px;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    border-bottom: solid 2px #1A223D;
+    width: 100%;
+ 
+}
+.balance .expandedWrapper .tabsWrapper .activeTab{
+    color: #00CD86;
+    font-size: 14px;
+    text-align: center;
+    text-transform: uppercase;
+    padding:10px;
+    border-bottom: solid 2px #00CD86;
+    width: 100%;
+}
+
+.balance .expandedWrapper .select .label{
+    color: white;
+    font-size: 11px;
+}
+
+.balance .expandedWrapper .select .option,.balance .expandedWrapper .selectOptions span{
+    color: #00CD86;
+    font-size: 11px;
+    margin: 5px;
+}     
+
+.balance .expandedWrapper .select .selectInputWrapper{
+    justify-content: space-around;
+    height: 30px;
+}
+
+.balance .expandedWrapper .selectOptions{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    z-index: 100;
+    background-color: #020610;
+ 
+    border: #1A223D solid 1px;
+}
+
+.balance .expandedWrapper .deposit_tag_line{
+    color:#59648A;
+    margin-top: 15px;
+    font-size: 15px;
+    font-family: "Cabin";
+}
+
+.balance .expandedWrapper .incoming_transaction_txt{
+color: white;
+margin: 10px 0;
+font-size: 12px;
+font-family: "Cabin";
+}
+.balance .expandedWrapper .incoming_transaction_txt .asterick{
+margin-bottom: 10px;
+margin-right: 5px;
+}
+
+.balance .expandedWrapper .IncomingTransactionsWrapper{
+    margin-top: 10px;
+    padding: 10px;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid #1A223D;
+
+}
+
+.balance .expandedWrapper .IncomingTransactionsWrapper .block{
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+height: 30px;
+}
+.balance .expandedWrapper .IncomingTransactionsWrapper .block .title{
+    color: white;
+    font-size: 9px;
+    text-transform: uppercase;
+    font-family: "Cabin";
+}
+.balance .expandedWrapper .IncomingTransactionsWrapper .block .ammount{
+    color: #00CD86;
+    font-size: 9px;
+    text-transform: uppercase;
+}
+.balance .expandedWrapper .IncomingTransactionsWrapper .block .warning{
+    
+    color: #D6C747;
+    
+    text-shadow: -1px 0px 6px rgba(2, 3, 16, 0.91);;
+}
+.balance .expandedWrapper .IncomingTransactionsWrapper .vertical_line,.balance .expandedWrapper .withdrawAmmountInputWrapper .vertical_line{
+    height: 30px;
+    border-left: 1px solid #1A223D;
+}
+
+.balance .expandedWrapper .historyTitle{
+color:#00CD86;
+font-size: 15px;
+text-transform: uppercase;
+margin-top: 15px;
+}
+
+.balance .expandedWrapper .currentDate{
+    color:#59648A;
+    font-size: 10px;
+    font-family: "Cabin"; 
+    margin-top: 10px;
+}
+
+
+.balance .expandedWrapper .withdrawAmmountInputWrapper,.balance .expandedWrapper .USDT_TRON_Address_Wrapper{
+background: rgba(2, 6, 16, 0.88);
+border: 1px solid #1A223D;
+backdrop-filter: blur(16px);
+border-radius: 8px;
+height: 50px;
+display: flex;
+flex-direction: row;
+margin-top: 10px;
+
+}
+.balance .expandedWrapper .USDT_TRON_Address_Wrapper{
+    flex-direction: column;
+}
+
+
+.balance .expandedWrapper .withdrawAmmountInputWrapper .withdrawAmmountInput{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 80%;
+}
+.balance .expandedWrapper .withdrawAmmountInputWrapper .withdrawAmmountInput .title,.balance .expandedWrapper .USDT_TRON_Address_Wrapper .title{
+    color: white;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-left: 5px;
+    text-transform: uppercase;
+}
+.balance .expandedWrapper .withdrawAmmountInputWrapper input,.balance .expandedWrapper .withdrawAmmountInputWrapper input::placeholder,.balance .expandedWrapper .USDT_TRON_Address_Wrapper input, .balance .expandedWrapper .USDT_TRON_Address_Wrapper input::placeholder{
+background-color: transparent;
+color:#00CD86;
+border: none;
+width: 80%;
+height: auto;
+padding: 5px;
+}
+.balance .expandedWrapper .withdrawAmmountInputWrapper input:focus,.balance .expandedWrapper .USDT_TRON_Address_Wrapper input, .balance .expandedWrapper .USDT_TRON_Address_Wrapper input::placeholder{
+outline: none;
+border: none;
+}
+
+.balance .expandedWrapper .withdrawAmmountInputWrapper .vertical_line{
+align-self: center;
+}
+
+.balance .expandedWrapper .withdrawAmmountInputWrapper .grp_input_btn{
+    color: #00CD86;
+    border-bottom: #00CD86 dashed 2px;
+    padding: 0;
+    align-self: center;
+    font-family: "Cabin";
+    margin: auto;
+}
+.balance .expandedWrapper  .submitBtn{
+    color: white;
+    
+    padding: 15px;
+    font-size: 15px;
+    font-family: "Conthrax";
+    text-transform: uppercase;
+    margin: 10px 0px;
+background: #39967B;
+border: 1px solid #05AE73;
+
+backdrop-filter: blur(20px);
+
+border-radius: 8px;
+}
+
+.balance .expandedWrapper .blitzDepositContent{
+    color: white;
+    font-size: 13px;
+    margin: 5px;
+    font-family: "Cabin";
+} 

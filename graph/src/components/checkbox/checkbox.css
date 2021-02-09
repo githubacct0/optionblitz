@@ -1,0 +1,15 @@
+.checkBoxWrapper{
+    border: 2px solid #00CD86;
+    filter: drop-shadow(0px 0px 8px #49FFE9);
+    border-radius: 2px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkBoxWrapper img{
+    margin: auto;
+    display: flex;
+}

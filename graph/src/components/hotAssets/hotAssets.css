@@ -1,0 +1,108 @@
+.hotAssetsSmallWrapper{
+background: rgba(2, 6, 16, 0.88);
+border: 1px solid #1A223D;
+border-radius: 8px;
+width: 150px;
+align-items: center;
+display: flex;
+flex-direction: column;
+margin: 10px;
+
+
+
+}
+.ethSMBGLine,.xauSMBGLine,.wtiSMBGLine,.xagSMBGLine{
+    width: 100%;
+    height: 100px;
+    margin-top: 5px;
+    margin-bottom: -95px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.ethSMBGLine{
+    background-image: url("../../assets/images/ethSMBGLine.png");
+
+}
+.xauSMBGLine{
+    background-image: url("../../assets/images/xauSMBGLine.png");
+
+}
+
+.wtiSMBGLine{
+    background-image: url("../../assets/images/wtiSMBGLine.png");  
+
+}
+
+.xagSMBGLine{
+    background-image: url("../../assets/images/xagSMBGLine.png");
+
+}
+
+.ethSMBG{
+    /* background: linear-gradient(180deg, rgba(0, 205, 134, 0.4) 0%, rgba(0, 205, 134, 0) 77.97%); */
+    background-image: url("../../assets/images/ethSMBGAssets.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+ 
+}
+
+.xauSMBG{
+    background-image: url("../../assets/images/XAUSMBGAssets.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.wtiSMBG{
+    background-image: url("../../assets/images/WTISMBGAssets.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+}
+
+.xagSMBG{
+    background-image: url("../../assets/images/XAGSMBGAssets.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100%;
+}
+
+
+.hotAssetsPrice{
+    color: white;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+.hotAssetLogo{
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+    margin-top: -20px;
+    align-self: center;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+}
+.hotAssetPriceChange{
+    color: #00CD86;
+    margin: 5px;
+}
+.hotAssetSymbol{
+    color: white;
+    margin: 5px;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+.priceSymbolWrapper{
+    margin-top: 50px;
+}
+.expand{
+    margin-left: auto;
+    margin-top: 8px;
+    margin-right: 5px;
+}

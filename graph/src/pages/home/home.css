@@ -1,0 +1,59 @@
+
+ .welcome_msg{
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    text-shadow: 0px 0px 9px rgba(0, 205, 134, 0.7);
+}
+
+.homeStarttraddingWrapper{
+    align-items: center;
+    padding: 5px;
+}
+.homeStarttraddingWrapper .plus{
+    margin-left: 5px;
+}
+.homeStarttraddingWrapper .startTradding{
+    color:#59648A;
+    font-size: 9;
+    font-family: "Cabin";
+     text-transform: uppercase;  
+     margin-left: 5px;
+}
+
+.homeBullets{
+    color: white;
+    padding-left: 15px;
+}
+.homeBullets li{
+    font-size: 12px;
+    font-weight: bold;
+    font-family: "Cabin";
+    margin: 10px;
+}
+
+.homeBullets li .boldTitle{
+    font-family: "Conthrax" !important;
+    text-decoration: underline;
+    color: #00CD86;
+    margin: 0 10px;
+    height: auto;
+}
+.homeBullets li .helpWrapper{
+    width: 19px;
+    height: 19px;
+    border-radius: 19px;
+    padding: 10px;
+    background-color: #59648A;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-root .carousel:last-child,.carousel-status{
+    display: none !important;
+}
+
+
+.carousel .slide {
+background: transparent !important;
+}   

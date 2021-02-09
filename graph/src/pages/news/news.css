@@ -1,0 +1,15 @@
+.news_bg{
+    background-image: url("../../assets/images/notifications_bg.png");
+    height: 275px;
+    padding: 10px;
+}
+
+.news_title{
+    margin-left: 5px;
+    color: white;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+.news_wrapper{
+    margin-top: -150px;
+}
