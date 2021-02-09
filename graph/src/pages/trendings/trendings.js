@@ -1,30 +1,19 @@
-import React, { useState } from "react";
-import SelectDropDown from "../../components/dropDowns/dropDown";
-import HotAssetsSmall from "../../components/hotAssets/hotAssetsSmall";
+import React, { useEffect, useState } from "react";
+import TrendingOption from "../../components/TrendingOption/trendingOption";
 import "./trendings.css";
-import Chart from "../../components/chart/chart";
+
 const Trendings = () => {
+    const [trending, setTrending] = useState("");
 
-    const [asset, setAsset] = useState("");
-
-    const handleAsset = (val) => {
-        setAsset(val);
+    const handleTrending = (val) => {
+        setTrending(val);
     }
     return (
         <div className="container">
-
-            <div className="chartWrapper container">
-                <Chart />
-            </div>
-
-            <div className={asset != "" ? "smAssetsWrapper" : "smAssetsWrapper"}>
-                <HotAssetsSmall price="$100" imageName="ethSM.png" priceChange="+9.06" symbol="eth" handleOnClick={() => { setAsset("eth"); }} />
-                <HotAssetsSmall price="$100" imageName="xauSM.png" priceChange="+6.08" symbol="xau" handleOnClick={() => { setAsset("xau"); }} />
-                <HotAssetsSmall price="$100" imageName="wtiSM.png" priceChange="+4.34" symbol="wti" handleOnClick={() => { setAsset("wti"); }} />
-                <HotAssetsSmall price="$100" imageName="xagSM.png" priceChange="+3.63" symbol="xag" handleOnClick={() => { setAsset("xag"); }} />
-
-                <HotAssetsSmall price="$100" imageName="ethSM.png" priceChange="+9.06" symbol="eth" handleOnClick={() => { setAsset("eth"); }} />
-                <HotAssetsSmall price="$100" imageName="xauSM.png" priceChange="+6.08" symbol="xau" handleOnClick={() => { setAsset("xau"); }} />
+            <div className="trendingOptions">
+                <TrendingOption title="Binary Options" link="/trending/binary" imageName="ethSM.png" text="Speculate up/down price movements across a range of assets." number="2" onClick={() => { handleTrending('binary'); }}/>
+                <TrendingOption title="Touch Options" link="/trending/touch" imageName="ethSM.png" text="Select target price, expiration and if the barrier is broken receive payout." number="2" onClick={() => { handleTrending('touch'); }}/>
+                <TrendingOption title="No-Touch Options" link="/trending/notouch" imageName="ethSM.png" text="Price must not break through barrier or range during trade team." number="2" onClick={() => { handleTrending('notouch'); }}/>
             </div>
         </div>
     );

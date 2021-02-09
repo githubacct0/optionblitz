@@ -9,6 +9,9 @@ import News from "./pages/news/news";
 import Trades from "./pages/trades/trades";
 import Chat from "./pages/chat/chat";
 import Trendings from "./pages/trendings/trendings";
+import Binary from "./pages/trendings/binary/binary";
+import Touch from "./pages/trendings/touch/touch";
+import NoTouch from "./pages/trendings/notouch/notouch";
 const Router = () => {
 
     return (
@@ -49,6 +52,18 @@ const Router = () => {
             <Route
                 path="/trendings"
                 render={(props => <Trendings {...props} />)}
+            />
+            <Route
+                path="/trending/binary"
+                render={(props => <Binary {...props} />)}
+            />
+            <Route
+                path="/trending/touch"
+                render={(props => <Touch {...props} />)}
+            />
+            <Route
+                path="/trending/notouch"
+                render={(props => <NoTouch {...props} />)}
             />
         </BrowserRouter>
     );

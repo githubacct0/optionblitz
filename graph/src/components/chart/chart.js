@@ -458,15 +458,17 @@ const Chart = () => {
 								ref={chartRef}
 								immutable={true}
 						/>
-						<div className="expand_wrapper" id="expand_btn" onClick={handleFullScreen}>
-								<img src="/assets/images/expand.png" />
-						</div>
+						<div className="button_wrapper">
 
-						<div className="toggle_chart_wrapper" id="expand_btn" onClick={handleToggleChartType}>
-								<img src="/assets/images/switchChart.png" />
-						</div>
-						<div className="indicaters_wrapper" onClick={() => { setShowTechnicalAnalysisModal(true); }}>
+							<div className="indicaters_wrapper" onClick={() => { setShowTechnicalAnalysisModal(true); }}>
 								<img src="/assets/images/technicalIndicators.png" />
+							</div>
+							<div className="toggle_chart_wrapper" id="expand_btn" onClick={handleToggleChartType}>
+								<img src="/assets/images/switchChart.png" />
+							</div>
+							<div className="expand_wrapper" id="expand_btn" onClick={handleFullScreen}>
+								<img src="/assets/images/expand.png" />
+							</div>
 						</div>
 						{showTechnicalAnalysisModal === true ?
 								<div className="indicators_modal">

@@ -1,4 +1,7 @@
 
+#chart_container{
+    position: relative;
+}
 .chart_container{
     display: flex;
     flex-direction: column;
@@ -6,27 +9,22 @@
     padding: 10px;
 }
 .expand_wrapper,.toggle_chart_wrapper,.indicaters_wrapper{
-    
-background: rgba(18, 25, 45, 0.8);
-border: 0.8px solid #1A223D;
-width: 40px;
-height: 40px;
-align-items: center;
-justify-content: center;
-display: flex;
-border-radius: 40px;
-margin-top: -50px;
-z-index: 10000;
-position: absolute;
-margin-top: -225px;
-left: 25px;
+    background: rgba(18, 25, 45, 0.8);
+    border: 1px solid #1A223D;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 40px;
+    z-index: 10000;
+    margin-left: 15px;
+    margin-bottom: 15px;
 }
-.toggle_chart_wrapper{
-    margin-top:-275px !important;
-}
-
-.indicaters_wrapper{
-    margin-top: -325px !important;
+.button_wrapper{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .indicators_modal{

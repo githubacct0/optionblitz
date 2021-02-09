@@ -56,7 +56,7 @@ const Navbar = (props) => {
                 }
 
             </div>
-            {location.pathname != "/trades" && location.pathname != "/trendings" ?
+            {location.pathname != "/trades" && location.pathname.indexOf("trending") <0 ?
                 <Link to="/trendings" >
                     <div className="row homeStarttraddingWrapper">
                         <img src={"/assets/svgs/plus.svg"} className="plus" />

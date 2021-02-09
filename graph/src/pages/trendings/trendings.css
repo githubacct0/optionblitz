@@ -4,21 +4,23 @@
     padding: 10px;
 }
 .smAssetsWrapper{
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-align-items: flex-start;
-justify-content: space-around;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-around;
 
-padding-top: 10px;
-padding-bottom: 25px;
+    padding-top: 10px;
+    padding-bottom: 25px;
 } 
 .chartWrapper{
     display: flex;
     flex-direction: column;
-    margin: 25px 10px;
+    margin: 0px;
+    padding: 5px 0;
     border: 1px solid #1A223D;
     border-radius: 8px;
+    position: relative;
 }
 .currency_wrapper{
     display: flex;

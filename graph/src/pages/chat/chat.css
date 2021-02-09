@@ -67,12 +67,13 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-    margin: 15px 0px;
+    margin-bottom: 15px;
     
 }
 .tabs_wrapper .chats_tab{
     border-bottom: solid 2px  #59648A;;
     color: #59648A;
+    padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
     width: 100%;

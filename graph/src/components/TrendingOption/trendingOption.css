@@ -1,0 +1,36 @@
+.trendingOptions{
+    padding: 0 15px;
+    border-top: 1px solid rgba(89, 100, 138, 0.4);
+}
+.trendingOptionWrapper{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(89, 100, 138, 0.4);
+}
+.trendingOptionWrapper .optionLogo{
+    width: 30px;
+    margin-right: 10px;
+    object-fit: contain;
+    object-position: top;
+}
+.trendingOptionWrapper .content{
+    width: 80%;
+}
+.trendingOptionWrapper .content .trendingTitle{
+    color: #00CD86;
+    line-height: 2;
+}
+.trendingOptionWrapper .content .trendingDesc{
+    color: #fff;
+    font-family: 'cabin';
+}
+.trendingOptionWrapper .trendingNo{
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: #59648A;
+    color: #fff;
+    font-family: 'cabin';
+    text-align: center;
+}

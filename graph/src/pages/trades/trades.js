@@ -27,7 +27,7 @@ const Trades = () => {
                 </span>
                 <span className={tab === "history" ? "trades_tab_active" : "trades_tab"} onClick={() => { setTab("history"); }}>
                     history
-                    </span>
+                </span>
             </div>
             <div className="tabs_btns">
                 <span className={tabBtn === "binary" ? "tab_btn activeTabBtn" : "tab_btn"} onClick={() => { setTabBtn("binary"); }}>

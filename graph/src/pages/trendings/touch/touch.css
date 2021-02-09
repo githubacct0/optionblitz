@@ -1,0 +1,21 @@
+.highcharts-root .highcharts-tooltip{
+    visibility: hidden;
+    opacity: 0;
+}
+.tooltip-header{
+    color: #00CD86;
+}
+.tooltip-content{
+    font-size: 14px;
+}
+.touch_visual{
+    margin-top: -50px;
+}
+.touch_visual img{
+    width: 100%;
+}
+.button_wrapper{
+    bottom: 0;
+    top: auto;
+    transform: none;
+}

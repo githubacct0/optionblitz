@@ -27,11 +27,12 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
-    margin-top: 5px;
+    position: relative;
 }
 .tabs_wrapper .trades_tab{
     border-bottom: solid 2px  #59648A;;
     color: #59648A;
+    padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;
     width: 100%;
@@ -40,6 +41,7 @@
 .tabs_wrapper .trades_tab_active{
     border-bottom: solid 2px #00CD86;
     color: #00CD86;
+    padding-top: 10px;
     padding-bottom: 10px;
     text-align: center;   
     width: 100%;
