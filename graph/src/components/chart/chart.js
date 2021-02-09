@@ -18,6 +18,8 @@ require("highcharts/modules/data")(Highcharts)
 const Chart = () => {
 
 		const [data, setData] = useState([]);
+		const [action_points, setAction] = useState([]);
+		const [band_points, setBand] = useState([]);
 
 		const [chartType, setChartType] = useState(["areaspline", "candlestick"])
 		const [currentChartIndex, setCurrentChartIndex] = useState(0);
@@ -54,7 +56,7 @@ const Chart = () => {
 						backgroundColor: "transparent",
 						panning: true,
 						styledMode: false,
-						spacing: [5, 5, 25, 5],
+						spacing: [5, 5, 5, 5],
 						zoomType: 'xy'
 
 				},
@@ -83,58 +85,41 @@ const Chart = () => {
 				// 		}
 				// },
 				lang: {
-						rangeSelectorZoom: ""
+					rangeSelectorZoom: ""
 				},
 				plotOptions: {
-						candlestick: {
-								color: '#1A223D',
-								upColor: '#39967B',
-						},
-						series: {
-								lineColor: '#00CD86'
-						}
+					candlestick: {
+						color: '#1A223D',
+						upColor: '#39967B',
+					},
+					series: {
+						lineColor: '#00CD86'
+					}
 				},
 
 				xAxis: [{
-						//marginRight: 20,
-						gridLineColor: "rgba(100,100,100,0.3)",
-						gridLineWidth: 0.1,
-						//showEmpty: true,
-						//height: "100%",
-						tickLength: 0,
-						lineWidth: 0,
-						crosshair:{
-							color: 'rgba(200,200,200,0.7)',
-							width: 2,
-						},
-						// plotBands: [
-						// 		{ // mark the weekend
-						// 				color: '#59648A',
-						// 				from: data[data.length-1][0],
-						// 				to: data[data.length-1][0],
-						// 				thickness: "15%"
-						// 		}, { // mark the weekend
-						// 				color: 'red',
-						// 				from: now.getTime(),
-						// 				to: now.getTime(),
-						// 				thickness: "15%"
-						// 		}
-						// ],
+					//marginRight: 20,
+					gridLineColor: "#D2D2D2",
+					gridLineWidth: 0.1,
+					//showEmpty: true,
+					//height: "100%",
+					tickLength: 0,
+					lineWidth: 0,
+					crosshair:{
+						color: 'rgba(200,200,200,0.7)',
+						width: 2,
+					},
+					plotBands: [...band_points],
 				}],
 				yAxis: [
-
-						{
-								gridLineColor: "#D2D2D2",
-								showEmpty: true,
-								gridLineWidth: 0.1,
-								//    top: "10%",
-								//max: 200,
-								crosshair:{
-									color: '#03B279',
-									width: 2,
-								},
-
-						}
+					{
+						gridLineColor: "#D2D2D2",
+						gridLineWidth: 0.1,
+						crosshair:{
+							color: '#03B279',
+							width: 2,
+						},
+					}
 				],
 
 				tooltip: {
@@ -241,143 +226,111 @@ const Chart = () => {
 				},
 				
 				series: [
-						{
-								type: "scatter",
+					{
+						type: "scatter",
 
-								data: [{
-										y: maxValue,
-										x: now.getTime(),
+						data: [...action_points],
+						enableMouseTracking: false,
+						opacity: 1,
+						zIndex: 1000
+					},
+					// {
+					// 		type: "arearange",
+					// 		// backgroundColor: "red",
+					// 		lineColor: "transparent",
+					// 		fillOpacity: 0.1,
+					// 		borderWidth: 0,
+					// 		data: [
+					// 				{
+					// 						x: Date.UTC(),
+					// 						high: 220,
+					// 						low: 80,
+					// 				},
+					// 				{
+					// 						x: Date.UTC(),
+					// 						high: 220,
+					// 						low: 80
+					// 				}
+					// 		],
+					// 		zones: [
+					// 				{ value: Date.UTC(), color: "rgba(39, 145, 178, 1)", fillOpacity: 0.1 }
+					// 		],
 
-										marker: {
-												symbol: 'url(/assets/images/stopWatch.png)'
-										}
-								}, {
-										y: maxValue,
-										x: now.getTime(),
-										marker: {
-												symbol: 'url(/assets/images/redFlag.png)'
-										}
-								}]
+					// }, {
+					// 		type: "arearange",
+
+					// 		// backgroundColor: "red",
+					// 		fillOpacity: 0.1,
+					// 		borderWidth: 0,
+					// 		data: [
+					// 				{
+					// 						x: Date.UTC(),
+					// 						high: 8000,
+					// 						low: 0,
+					// 				},
+					// 				{
+					// 						x: Date.UTC(),
+					// 						high: 8000,
+					// 						low: 0
+					// 				}
+					// 		],
+					// 		zones: [
+					// 				{ value: Date.UTC(), color: "rgba(255, 28, 41,1)", fillOpacity: 0.1 }
+					// 		],
+
+					// },
+					{
+						type: chartType[currentChartIndex],
+
+						showInNavigator: true,
+
+						id: 'chartID',
+						tooltip: {
+								valueDecimals: 2
 						},
-						// {
-						// 		type: "arearange",
-						// 		// backgroundColor: "red",
-						// 		lineColor: "transparent",
-						// 		fillOpacity: 0.1,
-						// 		borderWidth: 0,
-						// 		data: [
-						// 				{
-						// 						x: Date.UTC(),
-						// 						high: 220,
-						// 						low: 80,
-						// 				},
-						// 				{
-						// 						x: Date.UTC(),
-						// 						high: 220,
-						// 						low: 80
-						// 				}
-						// 		],
-						// 		zones: [
-						// 				{ value: Date.UTC(), color: "rgba(39, 145, 178, 1)", fillOpacity: 0.1 }
-						// 		],
-
-						// }, {
-						// 		type: "arearange",
-
-						// 		// backgroundColor: "red",
-						// 		fillOpacity: 0.1,
-						// 		borderWidth: 0,
-						// 		data: [
-						// 				{
-						// 						x: Date.UTC(),
-						// 						high: 8000,
-						// 						low: 0,
-						// 				},
-						// 				{
-						// 						x: Date.UTC(),
-						// 						high: 8000,
-						// 						low: 0
-						// 				}
-						// 		],
-						// 		zones: [
-						// 				{ value: Date.UTC(), color: "rgba(255, 28, 41,1)", fillOpacity: 0.1 }
-						// 		],
-
-						// },
-						{
-								type: chartType[currentChartIndex],
-
-								showInNavigator: true,
-
-								id: 'chartID',
-								tooltip: {
-										valueDecimals: 2
-								},
-								fillColor: {
-			              linearGradient: {
-			                  x1: 0,
-			                  y1: 0,
-			                  x2: 0,
-			                  y2: 1
-			              },
-			              stops: [
-			                  [0, '#02c884'],
-			                  [1, '#096e560a']
-			              ]
-			          },
-
-								data: [...data],
-								marker: {
-									symbol: 'circle'
-								},
-
-								// lastVisiblePrice: {
-								// 		enabled: true,
-								// 		color: '#00CD86'
-								// },
-								// colors: ["#00CD86", "#091117"],
+						fillColor: {
+							linearGradient: {
+								x1: 0,
+								y1: 0,
+								x2: 0,
+								y2: 1
+							},
+							stops: [
+								[0, '#03B27966'],
+								[1, '#096e560a']
+							]
 						},
-						// {
-						// 		lastPrice: {
-						// 				color: "#00CD86",
-						// 				enabled: true
-						// 		},
-						// 		lastVisiblePrice: {
-						// 				enabled: true,
-						// 				style: {
-						// 						fill: "#00CD86"
-						// 				},
-						// 				label: {
-						// 						enabled: true,
-						// 				}
-						// 		},
+
+						data: [...data],
+						marker: {
+							symbol: 'circle'
+						},
+
+						// lastVisiblePrice: {
+						// 		enabled: true,
+						// 		color: '#00CD86'
 						// },
+						// colors: ["#00CD86", "#091117"],
+					},
+					// {
+					// 		lastPrice: {
+					// 				color: "#00CD86",
+					// 				enabled: true
+					// 		},
+					// 		lastVisiblePrice: {
+					// 				enabled: true,
+					// 				style: {
+					// 						fill: "#00CD86"
+					// 				},
+					// 				label: {
+					// 						enabled: true,
+					// 				}
+					// 		},
+					// },
 
 
 				],
 				colors: ["#00CD86"],
-
-				// tooltip: {
-				//   crosshairs: [true,true],
-				//   backgroundColor: '#03B279',
-				//   borderColor: '#03B279',
-				//   shadow: false,
-				//   style: {
-				//     color: '#fff',
-				//   },
-				// },
-				// yAxis:[{
-				//   gridLineColor: 'rgba(100,100,100,0.3)',
-				//   lineWidth: 2,
-				//   lineColor: '#CF201E',
-				//   crosshair:{
-				//     color: '#03B279',
-				//     width: 2,
-				//   },
-				//   labels:{
-				//     x: 30,
-				//   }
-				// }],
 
 		}
 
@@ -429,25 +382,60 @@ const Chart = () => {
 		}
 		useEffect(() => {
 				async function getData() {
-						// 
-						let today = new Date();
-						let start = new Date(today.getTime() - (2 * 24 * 60 * 60 * 1000));
-						let start_date = start.getUTCFullYear() + '-' + handleNumberFormat(start.getUTCMonth()+1) + '-'+handleNumberFormat(start.getUTCDate()) + '-00:00';
-						let end_date = today.getUTCFullYear() + '-' + handleNumberFormat(today.getUTCMonth()+1) + '-'+handleNumberFormat(today.getUTCDate()) + '-' + handleNumberFormat(today.getUTCHours()) + ":" + handleNumberFormat(today.getUTCMinutes());
-						console.log(start_date);
-						console.log(end_date);
-						let endpoint = "https://marketdata.tradermade.com/api/v1/timeseries?currency=BTCUSD&api_key=eaXvcEwUpmUhGdSxeNB5&start_date="+start_date+"&end_date="+end_date+"&format=records&interval=minute&period=5"
-						await axios.get(endpoint).then((res) => {
-						//await axios.get("https://marketdata.tradermade.com/api/v1/timeseries?currency=EURUSD&api_key=eaXvcEwUpmUhGdSxeNB5&start_date=2021-02-05-00:00&end_date=2021-02-08-14:06&format=records&interval=minute&period=15").then((res) => {
-								console.log("res", res.data)
-								const data = res.data.quotes.map((x)=>{
-									return [new Date(x.date).getTime(), x.open, x.high, x.low, x.close];
-								})
-								console.log(data);
-								setData(data);
-						}).catch((err) => {
-								console.log(err);
+					// 
+					let today = new Date();
+					let start = new Date(today.getTime() - (2 * 24 * 60 * 60 * 1000));
+					let start_date = start.getUTCFullYear() + '-' + handleNumberFormat(start.getUTCMonth()+1) + '-'+handleNumberFormat(start.getUTCDate()) + '-00:00';
+					let end_date = today.getUTCFullYear() + '-' + handleNumberFormat(today.getUTCMonth()+1) + '-'+handleNumberFormat(today.getUTCDate()) + '-' + handleNumberFormat(today.getUTCHours()) + ":" + handleNumberFormat(today.getUTCMinutes());
+					console.log(start_date);
+					console.log(end_date);
+					let endpoint = "https://marketdata.tradermade.com/api/v1/timeseries?currency=BTCUSD&api_key=eaXvcEwUpmUhGdSxeNB5&start_date="+start_date+"&end_date="+end_date+"&format=records&interval=minute&period=5"
+					await axios.get(endpoint).then((res) => {
+						console.log("res", res.data)
+						let max_val = 0;
+						const data = res.data.quotes.map((x)=>{
+							if(x.high > max_val) max_val = x.high;
+							return [new Date(x.date).getTime(), x.open, x.high, x.low, x.close];
 						})
+						console.log(data);
+						setData(data);
+						let maxValue = Math.ceil(max_val/(Math.pow(10, (max_val.toFixed().length-1)))) * Math.pow(10, (max_val.toFixed().length-1));
+						
+						options.yAxis.max = maxValue;
+						console.log(maxValue);
+						let action_points = [{
+							y: maxValue,
+							x: data[data.length-1][0],
+
+							marker: {
+									symbol: 'url(/assets/images/stopWatch.png)'
+							}
+							}, {
+								y: maxValue,
+								x: now.getTime(),
+								marker: {
+										symbol: 'url(/assets/images/redFlag.png)'
+								}
+							}];
+						setAction(action_points)
+
+						let band_points = [
+								{ // mark the weekend
+									color: '#59648A',
+									from: data[data.length-1][0],
+									to: data[data.length-1][0],
+									thickness: "15%"
+								}, { // mark the weekend
+									color: 'red',
+									from: now.getTime(),
+									to: now.getTime(),
+									thickness: "15%"
+								}
+							];
+						setBand(band_points)
+					}).catch((err) => {
+							console.log(err);
+					})
 				};
 				getData();
 

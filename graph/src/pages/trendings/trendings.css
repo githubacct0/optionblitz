@@ -23,6 +23,7 @@ padding-bottom: 25px;
 .currency_wrapper{
     display: flex;
     flex-direction: column;
+    margin-right: 5px;
 /* margin-bottom: auto; */
 }
 .currency_wrapper .bitCoin{

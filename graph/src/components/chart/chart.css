@@ -110,6 +110,9 @@ left: 25px;
 .highcharts-point.zone-2 {
 	fill: #90ed7d;
 }
+.highcharts-scatter-series{
+    opacity: 1;
+}
 .highcharts-range-selector-buttons .highcharts-button{
   stroke-width: 0;
 }

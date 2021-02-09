@@ -81,10 +81,11 @@ font-family: "Raleway";
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    margin-right: 5px;
 }
 .tab{
-    background: #1B1D2B;
-    border-radius: 0px 0px 0px 6.32836px;
+    background: #39967B;
+    border-radius: 8px 0 0 0;
     padding: 12px;
     align-items: center;
     justify-content: space-between;
@@ -119,23 +120,24 @@ font-family: "Raleway";
 }
 .tab_title{
     font-size: 9px;
-    color: #ACBDCF;
+    color: #fff;
+    font-family: 'cabin';
 }
 .tab_content{
-font-size: 9px;
-color: #ACBDCF;
+    font-size: 9px;
+    color: #fff;
 }
 .closeWrapper{
-    background-color: #1B1D2B;
+    background-color: #39967B;
     padding: 10px;
     margin-left: 1px;
     flex: 1;
     display: flex;
     align-self: stretch;
     justify-self: stretch;
+    border-radius: 0 8px 0 0;
 }
 .add_tab{
-    margin-left: 10px;
     margin-right: 5px;
     align-self: stretch;
     justify-self: stretch;

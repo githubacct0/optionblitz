@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./navbar.css"
 const Tabs = () => {
-    const [tabs, setTabs] = useState([{ title: "BTC/USD", content: "90% Binary" }]);
+    const [tabs, setTabs] = useState([{ title: "BTC/USD", content: "Binary" }]);
 
     const handleDeleteTab = async (val) => {
         let tmpArr = tabs;
@@ -13,7 +13,7 @@ const Tabs = () => {
 
     const handleAddTab = async () => {
         let tmpArr = tabs;
-        setTabs([...tabs, { title: "BTC/USD", content: tabs.length + "% Binary" }]);
+        setTabs([...tabs, { title: "BTC/USD", content: "Binary" }]);
 
     }
     useEffect(() => {
