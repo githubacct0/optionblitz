@@ -4,8 +4,6 @@ import HighchartsReact from 'highcharts-react-official'
 import fullScreen from "highcharts/modules/full-screen";
 import PriceIndicator from "highcharts/modules/price-indicator";
 
-import TextInput from "../textInput/textInput";
-import PrimaryButton from "../buttons/primaryButton";
 import "./chart.css"
 import axios from "axios";
 
@@ -86,7 +84,13 @@ const TouchChart = () => {
                         },
                         lineWidth: 0,
                         visible: false,
-					}
+                        height: '100%'
+                    },
+                    {
+                        top: '60%',
+                        height: 100,
+                        offset: 0,
+                    }
 				],
 
 				tooltip: {
@@ -229,12 +233,12 @@ const TouchChart = () => {
 				async function getData() {
 					// 
 					let today = new Date();
-					let start = new Date(today.getTime() - (2 * 24 * 60 * 60 * 1000));
+					let start = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
 					let start_date = start.getUTCFullYear() + '-' + handleNumberFormat(start.getUTCMonth()+1) + '-'+handleNumberFormat(start.getUTCDate()) + '-00:00';
 					let end_date = today.getUTCFullYear() + '-' + handleNumberFormat(today.getUTCMonth()+1) + '-'+handleNumberFormat(today.getUTCDate()) + '-' + handleNumberFormat(today.getUTCHours()) + ":" + handleNumberFormat(today.getUTCMinutes());
 					console.log(start_date);
 					console.log(end_date);
-					let endpoint = "https://marketdata.tradermade.com/api/v1/timeseries?currency=BTCUSD&api_key=eaXvcEwUpmUhGdSxeNB5&start_date="+start_date+"&end_date="+end_date+"&format=records&interval=minute&period=5"
+					let endpoint = "https://marketdata.tradermade.com/api/v1/timeseries?currency=BTCUSD&api_key=eaXvcEwUpmUhGdSxeNB5&start_date="+start_date+"&end_date="+end_date+"&format=records"
 					await axios.get(endpoint).then((res) => {
 						console.log("res", res.data)
 						let max_val = 0;
